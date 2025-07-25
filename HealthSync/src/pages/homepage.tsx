@@ -113,7 +113,7 @@ export default function Homepage() {
             <div className="flex items-center space-x-2">
               <Heart className="h-8 w-8 text-red-500" />
               <span className="text-2xl font-bold text-gray-900">
-                HealthCare Portal
+                HealthSync
               </span>
             </div>
 
@@ -312,7 +312,7 @@ export default function Homepage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Why Choose HealthCare Portal?
+              Why Choose HealthSync?
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               We've built a comprehensive platform that puts you in control of
@@ -509,7 +509,7 @@ export default function Homepage() {
             Ready to Take Control of Your Health?
           </h2>
           <p className="text-xl text-blue-100 mb-8">
-            Join thousands of patients who trust HealthCare Portal with their
+            Join thousands of patients who trust HealthSync with their
             medical information.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -535,7 +535,7 @@ export default function Homepage() {
             <div className="md:col-span-2">
               <div className="flex items-center space-x-2 mb-4">
                 <Heart className="h-8 w-8 text-red-500" />
-                <span className="text-2xl font-bold">HealthCare Portal</span>
+                <span className="text-2xl font-bold">HealthSync</span>
               </div>
               <p className="text-gray-400 mb-6 max-w-md">
                 Empowering patients and healthcare providers with secure,
@@ -618,7 +618,7 @@ export default function Homepage() {
           <div className="border-t border-gray-800 mt-12 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <p className="text-gray-400 text-sm">
-                © 2025 HealthCare Portal. All rights reserved.
+                © 2025 HealthSync. All rights reserved.
               </p>
               <div className="flex space-x-6 mt-4 md:mt-0">
                 <a
