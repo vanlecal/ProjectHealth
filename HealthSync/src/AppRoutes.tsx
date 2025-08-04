@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Homepage from "./pages/homepage";
 import PatientDashboard from "./components/patient/patient-dashboard";
+import PatientRegister from "./pages/patient/PateintRegister";
+import PatientLogin from "./pages/patient/PatientLogin";
 
 function AppRoutes() {
   return (
@@ -10,6 +12,8 @@ function AppRoutes() {
         <Route path="/Home" element={<Homepage />} />
         <Route path="/user" element={<PatientDashboard />} />
         <Route path="/patient" element={<PatientDashboard />} />
+        <Route path="/patient/signup" element={<PatientRegister />} />
+        <Route path="/patient/login" element={<PatientLogin />} />
       </Routes>
     </Router>
   );

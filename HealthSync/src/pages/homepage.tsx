@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import {
   Heart,
   Shield,
@@ -102,6 +104,7 @@ const testimonials = [
 
 export default function Homepage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-white">
@@ -229,7 +232,11 @@ export default function Homepage() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="text-lg px-8 py-4">
+                <Button
+                  size="lg"
+                  className="text-lg px-8 py-4"
+                  onClick={() => navigate("/patient/login")}
+                >
                   Get Started as Patient
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
@@ -509,8 +516,8 @@ export default function Homepage() {
             Ready to Take Control of Your Health?
           </h2>
           <p className="text-xl text-blue-100 mb-8">
-            Join thousands of patients who trust HealthSync with their
-            medical information.
+            Join thousands of patients who trust HealthSync with their medical
+            information.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" variant="secondary" className="text-lg px-8 py-4">
