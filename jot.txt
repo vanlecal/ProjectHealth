@@ -1,0 +1,7 @@
+I want you to help me out with something I have a component 
+called patient-dashbaord.tsx, It's prototyped such that patient 
+some patient data in enbereded into into, Now what I want is instead
+ of having the patients data enbereded into it, I want the patient data
+  to be stored in a json fle and kept in the public dir, then use an endpoint 
+  like that of anapi to call the patients data from the patient json file
+   located in the public dir into the dashboard, are you ready?
