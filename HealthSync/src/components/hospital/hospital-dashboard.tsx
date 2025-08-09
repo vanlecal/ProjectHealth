@@ -415,7 +415,7 @@ export default function HospitalDashboard() {
       </header>
 
       {/* Desktop Header */}
-      <header className="hidden lg:block bg-white border-b border-gray-200 px-6 py-4">
+      <header className="hidden lg:block bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-30">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
@@ -449,14 +449,14 @@ export default function HospitalDashboard() {
 
       <div className="flex">
         {/* Desktop Sidebar */}
-        <nav className="hidden lg:block w-64 bg-white border-r border-gray-200 min-h-screen">
+        <nav className="hidden lg:block w-64 bg-white border-r border-gray-200 fixed left-0 top-[73px] h-[calc(100vh-73px)] overflow-y-auto">
           <div className="p-6">
             <NavigationContent activeTab={activeTab} setActiveTab={setActiveTab} />
           </div>
         </nav>
 
         {/* Main Content */}
-        <main className="flex-1 p-4 lg:p-6">
+        <main className="flex-1 p-4 lg:p-6 lg:ml-64">
           {/* Overview Tab */}
           {activeTab === "overview" && (
             <div className="space-y-6">
