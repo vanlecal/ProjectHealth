@@ -38,7 +38,7 @@ const PatientRegister = () => {
     }
 
     try {
-      const response = await postRequest("student/register", {
+      const response = await postRequest("patient/register", {
         name,
         IdCard,
         phone,
@@ -48,7 +48,7 @@ const PatientRegister = () => {
         password,
       });
       localStorage.setItem("token", response.token);
-      navigate("/student/scan");
+      navigate("/patient/dashboard");
     } catch (err) {
       console.error("Registration error:", err);
       setError("Registration failed, please try again!");

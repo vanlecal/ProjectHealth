@@ -9,10 +9,14 @@ import { useNavigate } from "react-router-dom";
 
 // Define a type for the user object
 interface User {
-  id: string;
+  _id: string;
   name: string;
   email: string;
-  // Add more fields as needed based on your backend
+  phone: string;
+  sex: string;
+  IdCard: string;
+  region: string;
+  role: string;
 }
 
 // Define the shape of the context
@@ -40,9 +44,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/auth/me", {
+
+        const res = await fetch("http://localhost:5000/api/patient/me", {
           headers: {
-            Authorization: localStorage.getItem("token") || "",
+            Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
           },
         });
 
@@ -55,7 +60,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       } catch (err) {
         console.error("Auth error:", err);
         localStorage.removeItem("token");
-        navigate("/lecturer/login");
+        navigate("/patient/login");
       } finally {
         setLoading(false);
       }

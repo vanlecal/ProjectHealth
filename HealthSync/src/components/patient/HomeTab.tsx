@@ -14,6 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/context/AuthContext";
 
 
 // Mock data
@@ -54,16 +55,18 @@ const recentAppointments = [
 
 
 export default function HomeTab() {
+  const { user } = useAuth();
+
   return (
     <>
       <div>
-                  <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
-                    Welcome back, {patientData.name.split(" ")[0]}!
-                  </h2>
-                  <p className="text-gray-600 text-sm lg:text-base">
-                    Here's an overview of your health information
-                  </p>
-                </div>
+        <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
+          Welcome back, {user?.name.split(" ")[0]}!
+        </h2>
+        <p className="text-gray-600 text-sm lg:text-base">
+          Here's an overview of your health information
+        </p>
+      </div>
 
                 {/* Quick Stats */}
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6">

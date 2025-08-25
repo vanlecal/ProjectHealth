@@ -9,6 +9,7 @@ import {
   Menu,
   X,
 } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 import { Button } from "@/components/ui/button";
 
@@ -35,8 +36,10 @@ const patientData = {
 
 
 export default function PatientDashboard() {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("home");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  console.log("User in dashboard:", user);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -71,7 +74,7 @@ export default function PatientDashboard() {
               <AvatarFallback>SJ</AvatarFallback>
             </Avatar>
             <div className="text-sm hidden md:block">
-              <p className="font-medium">{patientData.name}</p>
+              <p className="font-medium">{user?.name}</p>
               <p className="text-gray-500">Patient</p>
             </div>
           </div>

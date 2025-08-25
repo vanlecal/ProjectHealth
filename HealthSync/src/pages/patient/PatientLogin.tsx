@@ -21,12 +21,12 @@ const PatientLogin = () => {
     setError(""); // Clear any previous errors
 
     try {
-      const response = await postRequest("student/login", {
+      const response = await postRequest("patient/login", {
         InsuranceID,
         password,
       });
       localStorage.setItem("token", response.token);
-      navigate("/student/scan");
+      navigate("/patient/dashboard");
     } catch (err: Error | unknown) {
       console.error("Login error:", err);
       if (err instanceof Error) {
@@ -78,10 +78,10 @@ const PatientLogin = () => {
                 )}
                 <form onSubmit={handleLogin} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="email">Insurance ID</Label>
+                    <Label htmlFor="InsuranceID">Insurance ID</Label>
                     <Input
-                      id="email"
-                      type="email"
+                      id="InsuranceID"
+                      type="text"
                       value={InsuranceID}
                       onChange={(e) => setInsuranceID(e.target.value)}
                       placeholder="Enter your Insurance ID"
@@ -164,10 +164,10 @@ const PatientLogin = () => {
                 )}
                 <form onSubmit={handleLogin} className="space-y-3 sm:space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="email-mobile" className="text-sm">Insurance ID</Label>
+                    <Label htmlFor="InsuranceID" className="text-sm">Insurance ID</Label>
                     <Input
-                      id="email-mobile"
-                      type="email"
+                      id="InsuranceID"
+                      type="text"
                       value={InsuranceID}
                       onChange={(e) => setInsuranceID(e.target.value)}
                       placeholder="Enter your Insurance ID"

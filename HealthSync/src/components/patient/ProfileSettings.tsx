@@ -20,6 +20,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAuth } from "@/context/AuthContext";
+
 
 
 // Mock data
@@ -37,6 +39,7 @@ const patientData = {
 
 
 function ProfileSettings() {
+  const { user } = useAuth();
   return (
     <>
       <div>
@@ -90,7 +93,7 @@ function ProfileSettings() {
                           </Label>
                           <Input
                             id="firstName"
-                            defaultValue="Sarah"
+                            defaultValue={user?.name.split(" ")[0] || "MDD"}
                             className="text-sm lg:text-base"
                           />
                         </div>
@@ -103,7 +106,7 @@ function ProfileSettings() {
                           </Label>
                           <Input
                             id="lastName"
-                            defaultValue="Johnson"
+                            defaultValue={user?.name.split(" ")[1] || "MDD"}
                             className="text-sm lg:text-base"
                           />
                         </div>
@@ -117,7 +120,7 @@ function ProfileSettings() {
                         </Label>
                         <Input
                           id="nationalId"
-                          defaultValue={patientData.nationalId}
+                          defaultValue={user?.IdCard || patientData.nationalId}
                           disabled
                           className="text-sm lg:text-base"
                         />
@@ -143,7 +146,7 @@ function ProfileSettings() {
                           </Label>
                           <Input
                             id="phone"
-                            defaultValue={patientData.phone}
+                            defaultValue={user?.phone || patientData.phone  }
                             className="text-sm lg:text-base"
                           />
                         </div>
@@ -157,7 +160,7 @@ function ProfileSettings() {
                           <Input
                             id="email"
                             type="email"
-                            defaultValue={patientData.email}
+                            defaultValue={user?.email || patientData.email}
                             className="text-sm lg:text-base"
                           />
                         </div>
@@ -171,7 +174,7 @@ function ProfileSettings() {
                         </Label>
                         <Input
                           id="address"
-                          defaultValue={patientData.address}
+                          defaultValue={user?.region || patientData.address}
                           className="text-sm lg:text-base"
                         />
                       </div>

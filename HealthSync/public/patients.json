@@ -1,0 +1,192 @@
+{
+  "patients": [
+    {
+      "patientData": {
+        "name": "Sarah Johnson 2",
+        "nationalId": "NI123456789",
+        "dateOfBirth": "1985-03-15",
+        "phone": "+1 (555) 123-4567",
+        "email": "sarah.johnson@email.com",
+        "address": "123 Main St, City, State 12345",
+        "bloodType": "O+",
+        "allergies": ["Penicillin", "Shellfish"]
+      },
+      "recentAppointments": [
+        {
+          "id": 1,
+          "hospital": "City General Hospital",
+          "doctor": "Dr. Michael Chen",
+          "date": "2024-01-25",
+          "time": "10:00 AM",
+          "status": "upcoming",
+          "type": "Cardiology Consultation"
+        },
+        {
+          "id": 2,
+          "hospital": "Metro Health Center",
+          "doctor": "Dr. Lisa Rodriguez",
+          "date": "2024-01-15",
+          "time": "2:30 PM",
+          "status": "completed",
+          "type": "General Checkup"
+        }
+      ],
+      "medicalHistory": [
+        {
+          "id": 1,
+          "date": "2024-01-15",
+          "hospital": "Metro Health Center",
+          "doctor": "Dr. Lisa Rodriguez",
+          "diagnosis": "Hypertension",
+          "prescriptions": [
+            { "medication": "Lisinopril", "dosage": "10mg", "frequency": "Once daily" },
+            { "medication": "Amlodipine", "dosage": "5mg", "frequency": "Once daily" }
+          ]
+        },
+        {
+          "id": 2,
+          "date": "2023-12-10",
+          "hospital": "City General Hospital",
+          "doctor": "Dr. Michael Chen",
+          "diagnosis": "Type 2 Diabetes",
+          "prescriptions": [
+            { "medication": "Metformin", "dosage": "500mg", "frequency": "Twice daily" }
+          ]
+        }
+      ],
+      "hospitals": [
+        {
+          "id": 1,
+          "name": "City General Hospital",
+          "address": "456 Health Ave, City, State",
+          "phone": "+1 (555) 987-6543",
+          "specialties": ["Cardiology", "Neurology", "Orthopedics"],
+          "rating": 4.8
+        },
+        {
+          "id": 2,
+          "name": "Metro Health Center",
+          "address": "789 Medical Blvd, City, State",
+          "phone": "+1 (555) 456-7890",
+          "specialties": ["General Medicine", "Pediatrics", "Dermatology"],
+          "rating": 4.6
+        },
+        {
+          "id": 3,
+          "name": "Regional Medical Center",
+          "address": "321 Care Street, City, State",
+          "phone": "+1 (555) 234-5678",
+          "specialties": ["Emergency Medicine", "Surgery", "Radiology"],
+          "rating": 4.7
+        }
+      ]
+    },
+    {
+      "patientData": {
+        "name": "David Thompson",
+        "nationalId": "NI987654321",
+        "dateOfBirth": "1990-07-22",
+        "phone": "+1 (555) 222-3344",
+        "email": "david.thompson@email.com",
+        "address": "78 Oakwood Rd, City, State 67890",
+        "bloodType": "A-",
+        "allergies": ["Peanuts"]
+      },
+      "recentAppointments": [
+        {
+          "id": 1,
+          "hospital": "Regional Medical Center",
+          "doctor": "Dr. Emily Davis",
+          "date": "2024-02-10",
+          "time": "9:00 AM",
+          "status": "upcoming",
+          "type": "Orthopedic Checkup"
+        },
+        {
+          "id": 2,
+          "hospital": "City General Hospital",
+          "doctor": "Dr. Michael Chen",
+          "date": "2024-01-12",
+          "time": "11:00 AM",
+          "status": "completed",
+          "type": "Cardiology Consultation"
+        }
+      ],
+      "medicalHistory": [
+        {
+          "id": 1,
+          "date": "2024-01-12",
+          "hospital": "City General Hospital",
+          "doctor": "Dr. Michael Chen",
+          "diagnosis": "Arrhythmia",
+          "prescriptions": [
+            { "medication": "Beta Blockers", "dosage": "50mg", "frequency": "Once daily" }
+          ]
+        }
+      ],
+      "hospitals": [
+        {
+          "id": 1,
+          "name": "Regional Medical Center",
+          "address": "321 Care Street, City, State",
+          "phone": "+1 (555) 234-5678",
+          "specialties": ["Emergency Medicine", "Surgery", "Radiology"],
+          "rating": 4.7
+        },
+        {
+          "id": 2,
+          "name": "City General Hospital",
+          "address": "456 Health Ave, City, State",
+          "phone": "+1 (555) 987-6543",
+          "specialties": ["Cardiology", "Neurology", "Orthopedics"],
+          "rating": 4.8
+        }
+      ]
+    },
+    {
+      "patientData": {
+        "name": "Linda Martinez",
+        "nationalId": "NI456789123",
+        "dateOfBirth": "1978-11-05",
+        "phone": "+1 (555) 555-1212",
+        "email": "linda.martinez@email.com",
+        "address": "500 Maple Ln, City, State 54321",
+        "bloodType": "B+",
+        "allergies": []
+      },
+      "recentAppointments": [
+        {
+          "id": 1,
+          "hospital": "Metro Health Center",
+          "doctor": "Dr. Lisa Rodriguez",
+          "date": "2024-02-01",
+          "time": "1:30 PM",
+          "status": "upcoming",
+          "type": "Dermatology Consultation"
+        }
+      ],
+      "medicalHistory": [
+        {
+          "id": 1,
+          "date": "2023-11-20",
+          "hospital": "Metro Health Center",
+          "doctor": "Dr. Lisa Rodriguez",
+          "diagnosis": "Eczema",
+          "prescriptions": [
+            { "medication": "Topical Steroid Cream", "dosage": "Apply twice daily", "frequency": "Topical" }
+          ]
+        }
+      ],
+      "hospitals": [
+        {
+          "id": 1,
+          "name": "Metro Health Center",
+          "address": "789 Medical Blvd, City, State",
+          "phone": "+1 (555) 456-7890",
+          "specialties": ["General Medicine", "Pediatrics", "Dermatology"],
+          "rating": 4.6
+        }
+      ]
+    }
+  ]
+}

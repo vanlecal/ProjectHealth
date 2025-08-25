@@ -6,7 +6,7 @@ export const useRequireAuth = () => {
     const token = localStorage.getItem("token");
     if (!token) {
       localStorage.removeItem("token");
-      window.location.href = "/lecturer/login";
+      window.location.href = "/patient/login";
     }
   }, []);
 };

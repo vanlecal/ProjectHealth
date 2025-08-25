@@ -1,9 +1,8 @@
 import axios from 'axios';
 
-// const API_URL = 'http://localhost:5000/api';
-// const API_URL = 'https://project-jade-1.onrender.com/api';
+const API_URL = 'http://localhost:5000/api';
 
-const API_URL = import.meta.env.VITE_API_URL as string;
+// const API_URL = import.meta.env.VITE_API_URL as string;
 
 //Checking for API_URI variable
 if (!API_URL) {
@@ -28,7 +27,7 @@ const postRequest = async (endpoint: string, data: object) => {
   }
 };
 
-//Testing API for student scan post request
+//Testing API for patient scan post request
 export const postRequesttwo = async (endpoint: string, data: object) => {
   try {
     const token = localStorage.getItem("token");
