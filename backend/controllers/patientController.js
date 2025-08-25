@@ -71,4 +71,35 @@ exports.getPatientProfile = async (req, res) => {
 };
 
 
+// Update patient profile
+exports.updatePatientProfile = async (req, res) => {
+  try {
+    const updates = req.body;
+
+    // Disallow changing protected fields
+    const disallowedFields = ['password', 'role', '_id', 'email'];
+    disallowedFields.forEach((field) => delete updates[field]);
+    Object.keys(req.body).forEach(key => {
+      if (req.body[key] === '') {
+        delete req.body[key];
+      }
+    });
+
+    // Find and update
+    const user = await User.findByIdAndUpdate(
+      req.userId,
+      { $set: updates },
+      { new: true, runValidators: true, select: '-password' } // return updated doc without password
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json(user);
+  } catch (err) {
+    console.error('Update profile error:', err.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
 

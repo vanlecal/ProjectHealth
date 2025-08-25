@@ -244,6 +244,7 @@ export default function Homepage() {
                   variant="outline"
                   size="lg"
                   className="text-lg px-8 py-4 bg-transparent"
+                  onClick={() => navigate("/hospital/register")}
                 >
                   Hospital Portal
                 </Button>
