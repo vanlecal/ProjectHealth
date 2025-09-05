@@ -24,7 +24,8 @@ app.use(express.json());
 connectDB();
 
 app.use('/api/patient', require('./routes/patientRoutes'));
-
+app.use('/api/hospital', require('./routes/hospitalRoutes'));
+app.use('/api/medical-records', require('./routes/medicalRecordRoutes'));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

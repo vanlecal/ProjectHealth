@@ -29,6 +29,7 @@ function ProfileSettings() {
     phone: user?.phone || "",
     email: user?.email || "",
     region: user?.region || "",
+    address: user?.address || "",
     dateOfBirth: (user as any)?.dateOfBirth || "",
     bloodType: (user as any)?.bloodType || "",
     emergencyContact: (user as any)?.emergencyContact?.name
@@ -164,13 +165,23 @@ function ProfileSettings() {
               <Input id="email" value={formData.email} disabled />
             </div>
             <div>
+              <Label htmlFor="region" className="text-sm lg:text-base">
+                Region
+              </Label>
+              <Input
+                id="region"
+                value={formData.region}
+                onChange={(e) => handleChange("region", e.target.value)}
+              />
+            </div>
+            <div>
               <Label htmlFor="address" className="text-sm lg:text-base">
-                Address
+                Residential Address
               </Label>
               <Input
                 id="address"
-                value={formData.region}
-                onChange={(e) => handleChange("region", e.target.value)}
+                value={formData.address}
+                onChange={(e) => handleChange("address", e.target.value)}
               />
             </div>
           </CardContent>

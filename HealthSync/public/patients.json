@@ -4,7 +4,7 @@
       "patientData": {
         "name": "Sarah Johnson 2",
         "nationalId": "NI123456789",
-        "dateOfBirth": "1985-03-15",
+        "dateOfBirth": "1985-03-15 D",
         "phone": "+1 (555) 123-4567",
         "email": "sarah.johnson@email.com",
         "address": "123 Main St, City, State 12345",

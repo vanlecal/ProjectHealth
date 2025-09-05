@@ -21,7 +21,7 @@ import { useAuth } from "@/context/AuthContext";
 const patientData = {
   name: "Sarah Johnson",
   nationalId: "NI123456789",
-  dateOfBirth: "1985-03-15",
+  dateOfBirth: "1985-03-15 C",
   phone: "+1 (555) 123-4567",
   email: "sarah.johnson@email.com",
   address: "123 Main St, City, State 12345",

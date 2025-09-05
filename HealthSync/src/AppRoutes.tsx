@@ -5,7 +5,9 @@ import PatientRegister from "./pages/patient/PateintRegister";
 import PatientLogin from "./pages/patient/PatientLogin";
 import HospitalDashboard from "./components/hospital/hospital-dashboard";
 import UserDashboard from "./pages/patient/dashboard";
-import HospitalRegister from "./pages/hospital/PatientRegister";
+import HospitalRegister from "./pages/hospital/HospitalRegister";
+import HospitalUserDashboard from "./pages/hospital/dashboard";
+import HospitalLogin from "./pages/hospital/HospitalLogin";
 
 function AppRoutes() {
   return (
@@ -22,8 +24,10 @@ function AppRoutes() {
         <Route path="/patient/login" element={<PatientLogin />} />
 
         {/* Hospital Routes */}
-        <Route path="/hospital" element={<HospitalDashboard />} />
+        <Route path="/hospital/d" element={<HospitalDashboard />} />
+        <Route path="/hospital/dashboard" element={<HospitalUserDashboard />} />
         <Route path="/hospital/register" element={<HospitalRegister />} />
+        <Route path="/hospital/login" element={<HospitalLogin />} />
       </Routes>
     </Router>
   );

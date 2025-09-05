@@ -19,6 +19,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
+import { useAuth } from "@/context/HospitalAuthContext";
+
 // Import tab components
 import Overview from "./Overview";
 import Patients from "./Patients";
@@ -85,7 +87,7 @@ const samplePatientData: Patient = {
   personalInfo: {
     nationalId: "NI123456789",
     name: "Sarah Johnson",
-    dateOfBirth: "1985-03-15",
+    dateOfBirth: "1985-03-15 A",
     age: 38,
     gender: "Female",
     bloodType: "O+",
@@ -180,6 +182,8 @@ export default function HospitalDashboard() {
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [showAddRecordDialog, setShowAddRecordDialog] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+  const { user } = useAuth();
+  console.log("Authenticated Hospital User:", user);
 
   const handlePatientSearch = () => {
     if (searchPatientId === "NI123456789") {
@@ -241,7 +245,7 @@ export default function HospitalDashboard() {
               <Hospital className="h-8 w-8 text-blue-600" />
               <div>
                 <h1 className="text-xl font-bold text-gray-900">
-                  {hospitalInfo.name}
+                  {user?.name ?? "Hospital Admin 1"}
                 </h1>
                 <p className="text-sm text-gray-500">Hospital Portal</p>
               </div>
@@ -252,7 +256,7 @@ export default function HospitalDashboard() {
               <Bell className="h-5 w-5" />
             </Button>
             <Avatar>
-              <AvatarImage src="/placeholder-hospital.jpg" />
+              <AvatarImage src="/placeholder-medicare.jpg" />
               <AvatarFallback>CG</AvatarFallback>
             </Avatar>
             <div className="text-sm">

@@ -13,10 +13,9 @@ interface User {
   name: string;
   email: string;
   phone: string;
-  sex: string;
-  IdCard: string;
-  region: string;
+  registrationNumber: string;
   address: string;
+  region: string;
   role: string;
 }
 
@@ -46,7 +45,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const fetchUser = async () => {
       try {
 
-        const res = await fetch("http://localhost:5000/api/patient/me", {
+        const res = await fetch("http://localhost:5000/api/hospital/me", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
           },
@@ -61,7 +60,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       } catch (err) {
         console.error("Auth error:", err);
         localStorage.removeItem("token");
-        navigate("/patient/login");
+        navigate("/hospital/login");
       } finally {
         setLoading(false);
       }
