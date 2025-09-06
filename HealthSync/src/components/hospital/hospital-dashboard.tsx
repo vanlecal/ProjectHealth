@@ -288,11 +288,7 @@ export default function HospitalDashboard() {
           )}
           {activeTab === "patients" && (
             <Patients
-              searchPatientId={searchPatientId}
-              setSearchPatientId={setSearchPatientId}
-              selectedPatient={selectedPatient}
-              setSelectedPatient={setSelectedPatient}
-              handlePatientSearch={handlePatientSearch}
+
             />
           )}
           {activeTab === "appointments" && <Appointments />}

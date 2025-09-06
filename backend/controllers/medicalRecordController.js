@@ -7,15 +7,17 @@ const Patient = require('../models/patientModel');
 const addMedicalRecord = async (req, res) => {
   try {
     const { patient, hospital, doctor, diagnosis, notes, vitals, prescriptions } = req.body;
+    console.log("Request Body:", req.body);
 
-    // ensure patient exists
-    const existingPatient = await Patient.findById(patient);
+    // Find patient by IdCard
+    const existingPatient = await Patient.findOne({ IdCard: patient });
     if (!existingPatient) {
       return res.status(404).json({ message: "Patient not found" });
     }
 
+    // Create medical record using patient's _id
     const record = await MedicalRecord.create({
-      patient,
+      patient: existingPatient._id,
       hospital,
       doctor,
       diagnosis,
@@ -29,7 +31,6 @@ const addMedicalRecord = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
-
 
 // @desc    Get all medical records for a patient
 // @route   GET /api/records/:patientId
@@ -59,7 +60,7 @@ const getMedicalRecordsByCard = async (req, res) => {
 
     // Fetch medical records linked to this patient
     const records = await MedicalRecord.find({ patient: patient._id })
-      .populate("patient", "name IdCard dateOfBirth gender phone email address bloodType allergies emergencyContact")
+      .populate("patient", "name IdCard dateOfBirth gender phone email address bloodType knownAllergies emergencyContact sex region")
       .populate("hospital", "name")
       .sort({ createdAt: -1 });
 

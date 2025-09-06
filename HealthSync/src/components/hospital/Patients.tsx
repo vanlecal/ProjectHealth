@@ -64,7 +64,7 @@ interface PersonalInfo {
   email: string;
   address: string;
   emergencyContact: string;
-  allergies: string[];
+  knownAllergies: string[];
 }
 
 interface Patient {
@@ -72,22 +72,78 @@ interface Patient {
   medicalHistory: MedicalRecord[];
 }
 
-interface PatientsProps {
-  searchPatientId: string;
-  setSearchPatientId: (id: string) => void;
-  selectedPatient: Patient | null;
-  setSelectedPatient: (patient: Patient | null) => void;
-  handlePatientSearch: () => void;
-}
-
-
-export default function Patients({
-  searchPatientId,
-  setSearchPatientId,
-  selectedPatient,
-  handlePatientSearch,
-}: PatientsProps) {
+export default function Patients() {
+  const [searchPatientId, setSearchPatientId] = useState("");
+  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [expandedRecord, setExpandedRecord] = useState<number | null>(null);
+  const [error, setError] = useState("");
+
+  const handlePatientSearch = async () => {
+    if (!searchPatientId.trim()) return;
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/medical-records/card/${searchPatientId.trim()}`
+      );
+      const data = await response.json();
+      console.log("Fetched patient data:", data);
+
+      if (!response.ok || !Array.isArray(data) || data.length === 0) {
+        setError(data.message || "Patient not found");
+        setSelectedPatient(null);
+        return;
+      }
+
+      setError("");
+      const firstRecord = data[0];
+
+      const mappedPatient: Patient = {
+        personalInfo: {
+          nationalId: firstRecord.patient?.IdCard || "N/A",
+          name: firstRecord.patient?.name || "Unknown",
+          dateOfBirth: firstRecord.patient?.dateOfBirth
+            ? new Date(firstRecord.patient.dateOfBirth).toLocaleDateString()
+            : "N/A",
+          age: firstRecord.patient?.dateOfBirth
+            ? new Date().getFullYear() -
+              new Date(firstRecord.patient.dateOfBirth).getFullYear()
+            : 0,
+          gender: firstRecord.patient?.sex || "N/A",
+          bloodType: firstRecord.patient?.bloodType || "N/A",
+          phone: firstRecord.patient?.phone || "N/A",
+          email: firstRecord.patient?.email || "N/A",
+          address: firstRecord.patient?.address || "N/A",
+          emergencyContact: firstRecord.patient?.emergencyContact?.name
+            ? `${firstRecord.patient.emergencyContact.name} (${firstRecord.patient.emergencyContact.phone})`
+            : "N/A",
+          knownAllergies: firstRecord.patient?.knownAllergies || [],
+        },
+        medicalHistory: data.map((record: any, index: number) => ({
+          id: index + 1,
+          date: record.date
+            ? new Date(record.date).toLocaleDateString()
+            : "N/A",
+          hospital: record.hospital?.name || "N/A",
+          doctor: record.doctor || "N/A",
+          diagnosis: record.diagnosis || "N/A",
+          vitals: record.vitals || {
+            bp: "N/A",
+            hr: "N/A",
+            temp: "N/A",
+            weight: "N/A",
+          },
+          prescriptions: record.prescriptions || [],
+          notes: record.notes || "",
+        })),
+      };
+
+      setSelectedPatient(mappedPatient);
+    } catch (err) {
+      console.error("Error fetching patient:", err);
+      setError("An error occurred while fetching patient");
+      setSelectedPatient(null);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -95,9 +151,7 @@ export default function Patients({
         <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
           Patient Management
         </h2>
-        <p className="text-gray-600">
-          Search and manage patient records
-        </p>
+        <p className="text-gray-600">Search and manage patient records</p>
       </div>
 
       {/* Patient Search */}
@@ -116,22 +170,20 @@ export default function Patients({
               </Label>
               <Input
                 id="patientId"
-                placeholder="e.g., NI123456789"
+                placeholder="e.g., T1"
                 value={searchPatientId}
                 onChange={(e) => setSearchPatientId(e.target.value)}
                 className="mt-1"
               />
             </div>
             <div className="flex items-end">
-              <Button
-                onClick={handlePatientSearch}
-                className="w-full sm:w-auto"
-              >
+              <Button onClick={handlePatientSearch} className="w-full sm:w-auto">
                 <Search className="mr-2 h-4 w-4" />
                 Search Patient
               </Button>
             </div>
           </div>
+          {error && <p className="text-red-500 mt-2">{error}</p>}
         </CardContent>
       </Card>
 
@@ -226,12 +278,18 @@ export default function Patients({
                 <div>
                   <h4 className="font-semibold mb-3">Allergies</h4>
                   <div className="flex flex-wrap gap-2">
-                    {selectedPatient.personalInfo.allergies.map(
-                      (allergy, index) => (
-                        <Badge key={index} variant="destructive">
-                          {allergy}
-                        </Badge>
+                    {selectedPatient.personalInfo.knownAllergies.length > 0 ? (
+                      selectedPatient.personalInfo.knownAllergies.map(
+                        (knownAllergy, index) => (
+                          <Badge key={index} variant="destructive">
+                            {knownAllergy}
+                          </Badge>
+                        )
                       )
+                    ) : (
+                      <span className="text-gray-500 text-sm">
+                        No allergies reported
+                      </span>
                     )}
                   </div>
                 </div>

@@ -23,7 +23,6 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -31,14 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import AddRecord from "./Add-record";
 
 // Types
 interface Vitals {
@@ -172,6 +164,7 @@ export default function Records() {
   const [newRecord, setNewRecord] = useState({
     patientId: "",
     diagnosis: "",
+    doctor: "",
     notes: "",
     vitals: { bp: "", hr: "", temp: "", weight: "" },
     prescriptions: [{ medication: "", dosage: "", frequency: "", duration: "" }],
@@ -235,187 +228,8 @@ export default function Records() {
             Manage and view patient medical records
           </p>
         </div>
-        <Dialog open={showAddRecordDialog} onOpenChange={setShowAddRecordDialog}>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="mr-2 h-4 w-4" />
-              Add Record
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Add New Medical Record</DialogTitle>
-              <DialogDescription>
-                Create a new medical record for a patient
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-6">
-              {/* Patient Information */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="patient-id">Patient ID</Label>
-                  <Input
-                    id="patient-id"
-                    placeholder="NI123456789"
-                    value={newRecord.patientId}
-                    onChange={(e) => setNewRecord(prev => ({ ...prev, patientId: e.target.value }))}
-                  />
-                </div>
-                <div>
-                  <Label>Record Type</Label>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {recordTypes.slice(1).map((type) => (
-                        <SelectItem key={type} value={type}>
-                          {type}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
+        <AddRecord/>
 
-              {/* Diagnosis */}
-              <div>
-                <Label htmlFor="diagnosis">Diagnosis</Label>
-                <Input
-                  id="diagnosis"
-                  placeholder="Enter diagnosis"
-                  value={newRecord.diagnosis}
-                  onChange={(e) => setNewRecord(prev => ({ ...prev, diagnosis: e.target.value }))}
-                />
-              </div>
-
-              {/* Vitals */}
-              <div>
-                <Label className="text-base font-medium">Vitals</Label>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-2">
-                  <div>
-                    <Label htmlFor="bp">Blood Pressure</Label>
-                    <Input
-                      id="bp"
-                      placeholder="120/80"
-                      value={newRecord.vitals.bp}
-                      onChange={(e) => setNewRecord(prev => ({
-                        ...prev,
-                        vitals: { ...prev.vitals, bp: e.target.value }
-                      }))}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="hr">Heart Rate</Label>
-                    <Input
-                      id="hr"
-                      placeholder="72"
-                      value={newRecord.vitals.hr}
-                      onChange={(e) => setNewRecord(prev => ({
-                        ...prev,
-                        vitals: { ...prev.vitals, hr: e.target.value }
-                      }))}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="temp">Temperature</Label>
-                    <Input
-                      id="temp"
-                      placeholder="98.6°F"
-                      value={newRecord.vitals.temp}
-                      onChange={(e) => setNewRecord(prev => ({
-                        ...prev,
-                        vitals: { ...prev.vitals, temp: e.target.value }
-                      }))}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="weight">Weight</Label>
-                    <Input
-                      id="weight"
-                      placeholder="165 lbs"
-                      value={newRecord.vitals.weight}
-                      onChange={(e) => setNewRecord(prev => ({
-                        ...prev,
-                        vitals: { ...prev.vitals, weight: e.target.value }
-                      }))}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Prescriptions */}
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <Label className="text-base font-medium">Prescriptions</Label>
-                  <Button type="button" variant="outline" size="sm" onClick={addPrescription}>
-                    <Plus className="mr-1 h-4 w-4" />
-                    Add Prescription
-                  </Button>
-                </div>
-                <div className="space-y-4">
-                  {newRecord.prescriptions.map((prescription, index) => (
-                    <div key={index} className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 border rounded">
-                      <div>
-                        <Label>Medication</Label>
-                        <Input
-                          placeholder="Medication name"
-                          value={prescription.medication}
-                          onChange={(e) => updatePrescription(index, "medication", e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <Label>Dosage</Label>
-                        <Input
-                          placeholder="10mg"
-                          value={prescription.dosage}
-                          onChange={(e) => updatePrescription(index, "dosage", e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <Label>Frequency</Label>
-                        <Input
-                          placeholder="Once daily"
-                          value={prescription.frequency}
-                          onChange={(e) => updatePrescription(index, "frequency", e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <Label>Duration</Label>
-                        <Input
-                          placeholder="30 days"
-                          value={prescription.duration}
-                          onChange={(e) => updatePrescription(index, "duration", e.target.value)}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Notes */}
-              <div>
-                <Label htmlFor="notes">Clinical Notes</Label>
-                <Textarea
-                  id="notes"
-                  placeholder="Enter clinical notes and observations..."
-                  rows={4}
-                  value={newRecord.notes}
-                  onChange={(e) => setNewRecord(prev => ({ ...prev, notes: e.target.value }))}
-                />
-              </div>
-
-              <div className="flex justify-end space-x-2">
-                <Button variant="outline" onClick={() => setShowAddRecordDialog(false)}>
-                  Cancel
-                </Button>
-                <Button onClick={() => setShowAddRecordDialog(false)}>
-                  Save Record
-                </Button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
       </div>
 
       {/* Filters */}

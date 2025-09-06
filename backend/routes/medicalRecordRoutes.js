@@ -10,7 +10,7 @@ router.post('/', protect, medicalRecordController.addMedicalRecord);
 router.get('/:patientId', protect, medicalRecordController.getMedicalRecords);
 
 // get patient records by ID card number
-router.get('/card/:IdCard', protect, medicalRecordController.getMedicalRecordsByCard);
+router.get('/card/:IdCard', medicalRecordController.getMedicalRecordsByCard);
 
 // update a record
 router.put('/:id', protect, medicalRecordController.updateMedicalRecord);
