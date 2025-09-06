@@ -178,21 +178,16 @@ const NavigationContent: React.FC<NavigationContentProps> = ({ activeTab, setAct
 
 export default function HospitalDashboard() {
   const [activeTab, setActiveTab] = useState<string>("overview");
-  const [searchPatientId, setSearchPatientId] = useState<string>("");
-  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [showAddRecordDialog, setShowAddRecordDialog] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const { user } = useAuth();
   console.log("Authenticated Hospital User:", user);
 
-  const handlePatientSearch = () => {
-    if (searchPatientId === "NI123456789") {
-      setSelectedPatient(samplePatientData);
-    } else {
-      setSelectedPatient(null);
-      alert("Patient not found. Try NI123456789 for demo.");
-    }
+  const handleLogout = () => {
+    localStorage.removeItem("hospitalToken");
+    window.location.href = "/hospital/login";
   };
+
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -263,7 +258,7 @@ export default function HospitalDashboard() {
               <p className="font-medium">Dr. Admin</p>
               <p className="text-gray-500">Administrator</p>
             </div>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" onClick={handleLogout}>
               <LogOut className="h-5 w-5" />
             </Button>
           </div>

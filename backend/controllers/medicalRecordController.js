@@ -39,6 +39,7 @@ const getMedicalRecords = async (req, res) => {
   try {
     const records = await MedicalRecord.find({ patient: req.params.patientId })
       .populate('patient', 'name dob gender')
+      .populate("hospital", "name")
       .sort({ visitDate: -1 });
 
     res.json(records);
