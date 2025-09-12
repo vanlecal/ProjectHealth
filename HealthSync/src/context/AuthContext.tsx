@@ -6,6 +6,8 @@ import React, {
   type ReactNode,
 } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "@/utils/api"
+
 
 // Define a type for the user object
 interface User {
@@ -46,7 +48,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const fetchUser = async () => {
       try {
 
-        const res = await fetch("http://localhost:5000/api/patient/me", {
+        const res = await fetch(`${API_URL}/patient/me`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
           },

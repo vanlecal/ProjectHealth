@@ -19,6 +19,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useAuth } from "@/context/AuthContext";
+import { API_URL } from "@/utils/api"
+
 
 function ProfileSettings() {
   const { user } = useAuth();
@@ -59,7 +61,7 @@ function ProfileSettings() {
   // Submit updated data
   const handleSave = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/patient/me", {
+      const res = await fetch(`${API_URL}/patient/me`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

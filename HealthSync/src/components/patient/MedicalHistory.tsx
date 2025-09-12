@@ -8,6 +8,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
+import { API_URL } from "@/utils/api"
+
 
 interface Prescription {
   medication: string;
@@ -41,7 +43,7 @@ const MedicalHistory = () => {
         return;
       }
       try {
-        const response = await fetch(`http://localhost:5000/api/medical-records/${user._id}`, {
+        const response = await fetch(`${API_URL}/medical-records/${user._id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
           },

@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api';
+//const API_URL = 'http://localhost:5000/api';
 
-// const API_URL = import.meta.env.VITE_API_URL as string;
+ const API_URL = import.meta.env.VITE_API_URL as string;
 
 //Checking for API_URI variable
 if (!API_URL) {
@@ -71,29 +71,6 @@ const getRequest = async (endpoint: string, token?: string) => {
 };
 
 
-const generateQr = async (title: string, program: string) => {
-  const token = localStorage.getItem('token');
-
-  try {
-    const res = await axios.post(
-      `${API_URL}/lecturer/generate`,
-      { title, program },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    return res.data;
-  } catch (error: unknown) {
-    console.error('QR generation error:', error);
-    if (axios.isAxiosError(error) && error.response) {
-      throw error.response.data;
-    } else {
-      throw new Error('Something went wrong!');
-    }
-  }
-};
 
 
 export const deleteRequest = async (endpoint: string, token?: string) => {
@@ -118,4 +95,4 @@ export const deleteRequest = async (endpoint: string, token?: string) => {
 
 
 
-export { postRequest, getRequest, generateQr  };
+export {API_URL, postRequest, getRequest};

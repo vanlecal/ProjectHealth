@@ -26,6 +26,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { API_URL } from "@/utils/api"
 
 // Types
 interface Vitals {
@@ -83,7 +84,7 @@ export default function Patients() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/medical-records/card/${searchPatientId.trim()}`
+        `${API_URL}/medical-records/card/${searchPatientId.trim()}`
       );
       const data = await response.json();
       console.log("Fetched patient data:", data);

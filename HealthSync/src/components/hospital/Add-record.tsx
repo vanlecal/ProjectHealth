@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Plus } from "lucide-react";
+import { API_URL } from "@/utils/api"
 
 // ------------------ TYPES ------------------
 interface Prescription {
@@ -97,7 +98,7 @@ export default function AddRecord() {
       prescriptions: newRecord.prescriptions,
     };
     try {
-      const res = await fetch("http://localhost:5000/api/medical-records/", {
+      const res = await fetch(`${API_URL}/medical-records/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
