@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/patientModel');
+const Hospital = require('../models/hospitalModel');
 
 
 exports.registerUser = async (req, res) => {
@@ -103,3 +104,13 @@ exports.updatePatientProfile = async (req, res) => {
   }
 };
 
+// Fetch all hospitals (for patient user)
+exports.getAllHospitals = async (req, res) => {
+  try {
+    const hospitals = await Hospital.find().select('-password'); // remove password field for safety
+    res.status(200).json(hospitals);
+  } catch (err) {
+    console.error('Fetch hospitals error:', err.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+};

@@ -9,12 +9,11 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/context/AuthContext";
+import RecentAppointments from "./RecentAppointments";
 
 
 // Mock data
@@ -28,30 +27,6 @@ const patientData = {
   bloodType: "O+",
   allergies: ["Penicillin", "Shellfish"],
 };
-
-const recentAppointments = [
-  {
-    id: 1,
-    hospital: "City General Hospital",
-    doctor: "Dr. Michael Chen",
-    date: "2024-01-25",
-    time: "10:00 AM",
-    status: "upcoming",
-    type: "Cardiology Consultation",
-  },
-  {
-    id: 2,
-    hospital: "Metro Health Center",
-    doctor: "Dr. Lisa Rodriguez",
-    date: "2024-01-15",
-    time: "2:30 PM",
-    status: "completed",
-    type: "General Checkup",
-  },
-];
-
-
-
 
 
 export default function HomeTab() {
@@ -129,57 +104,8 @@ export default function HomeTab() {
                 </div>
 
                 {/* Recent Appointments */}
-                <Card>
-                  <CardHeader className="p-4 lg:p-6">
-                    <CardTitle className="text-lg lg:text-xl">
-                      Recent Appointments
-                    </CardTitle>
-                    <CardDescription className="text-sm lg:text-base">
-                      Your upcoming and recent medical appointments
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="p-4 lg:p-6">
-                    <div className="space-y-3 lg:space-y-4">
-                      {recentAppointments.map((appointment) => (
-                        <div
-                          key={appointment.id}
-                          className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 lg:p-4 border rounded-lg space-y-2 sm:space-y-0"
-                        >
-                          <div className="flex items-center space-x-3 lg:space-x-4">
-                            <div
-                              className={`w-3 h-3 rounded-full flex-shrink-0 ${
-                                appointment.status === "upcoming"
-                                  ? "bg-blue-500"
-                                  : "bg-green-500"
-                              }`}
-                            />
-                            <div className="min-w-0 flex-1">
-                              <p className="font-medium text-sm lg:text-base truncate">
-                                {appointment.hospital}
-                              </p>
-                              <p className="text-xs lg:text-sm text-gray-600">
-                                {appointment.doctor} • {appointment.type}
-                              </p>
-                              <p className="text-xs lg:text-sm text-gray-500">
-                                {appointment.date} at {appointment.time}
-                              </p>
-                            </div>
-                          </div>
-                          <Badge
-                            variant={
-                              appointment.status === "upcoming"
-                                ? "default"
-                                : "secondary"
-                            }
-                            className="text-xs self-start sm:self-center"
-                          >
-                            {appointment.status}
-                          </Badge>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
+                <RecentAppointments/>
+
 
                 {/* Health Alerts */}
                 <Card>
