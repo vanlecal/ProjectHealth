@@ -17,7 +17,11 @@ const hospitalSchema = new mongoose.Schema({
     required: false
   },
   capacity: { type: Number, required: false }, // No. of beds / patients hospital can handle
-  departments: [{ type: String }], // Example: ['Cardiology', 'Pediatrics', 'Oncology']
+  website: { type: String, required: false },
+  yearEstablished: { type: String, required: false },
+  startRating: { type: Number, required: false },
+  departments: [{ type: String }],
+  Specialties: [{ type: String }],
   establishedDate: { type: Date, required: false }, // When hospital was founded
   emergencyAvailable: { type: Boolean, default: false } // 24/7 emergency services
 });

@@ -28,50 +28,6 @@ import Appointments from "./Appointments";
 import Records from "./Records";
 import MySettings  from "./Settings";
 
-/* ===== Types ===== */
-interface Vitals {
-  bp: string;
-  hr: string;
-  temp: string;
-  weight: string;
-}
-
-interface Prescription {
-  medication: string;
-  dosage: string;
-  frequency: string;
-  duration: string;
-}
-
-interface MedicalRecord {
-  id: number;
-  date: string;
-  hospital: string;
-  doctor: string;
-  diagnosis: string;
-  prescriptions: Prescription[];
-  notes?: string;
-  vitals: Vitals;
-}
-
-interface PersonalInfo {
-  nationalId: string;
-  name: string;
-  dateOfBirth: string;
-  age: number;
-  gender: string;
-  bloodType: string;
-  phone: string;
-  email: string;
-  address: string;
-  emergencyContact: string;
-  allergies: string[];
-}
-
-interface Patient {
-  personalInfo: PersonalInfo;
-  medicalHistory: MedicalRecord[];
-}
 
 /* ===== Hospital Info ===== */
 const hospitalInfo = {
@@ -81,65 +37,6 @@ const hospitalInfo = {
   email: "admin@citygeneralhospital.com",
   license: "HOS-2024-001",
   specialties: ["Cardiology", "Neurology", "Orthopedics", "Emergency Medicine"],
-};
-
-const samplePatientData: Patient = {
-  personalInfo: {
-    nationalId: "NI123456789",
-    name: "Sarah Johnson",
-    dateOfBirth: "1985-03-15 A",
-    age: 38,
-    gender: "Female",
-    bloodType: "O+",
-    phone: "+1 (555) 123-4567",
-    email: "sarah.johnson@email.com",
-    address: "123 Main St, City, State 12345",
-    emergencyContact: "John Johnson - +1 (555) 987-6543",
-    allergies: ["Penicillin", "Shellfish"],
-  },
-  medicalHistory: [
-    {
-      id: 1,
-      date: "2024-01-15",
-      hospital: "Metro Health Center",
-      doctor: "Dr. Lisa Rodriguez",
-      diagnosis: "Hypertension",
-      prescriptions: [
-        {
-          medication: "Lisinopril",
-          dosage: "10mg",
-          frequency: "Once daily",
-          duration: "30 days",
-        },
-        {
-          medication: "Amlodipine",
-          dosage: "5mg",
-          frequency: "Once daily",
-          duration: "30 days",
-        },
-      ],
-      notes: "Patient responding well to treatment. Blood pressure stable.",
-      vitals: { bp: "130/85", hr: "72", temp: "98.6°F", weight: "165 lbs" },
-    },
-    {
-      id: 2,
-      date: "2023-12-10",
-      hospital: "City General Hospital",
-      doctor: "Dr. Michael Chen",
-      diagnosis: "Type 2 Diabetes",
-      prescriptions: [
-        {
-          medication: "Metformin",
-          dosage: "500mg",
-          frequency: "Twice daily",
-          duration: "90 days",
-        },
-      ],
-      notes:
-        "Initial diagnosis. Patient education provided on diet and exercise.",
-      vitals: { bp: "140/90", hr: "78", temp: "98.4°F", weight: "170 lbs" },
-    },
-  ],
 };
 
 interface NavigationContentProps {
@@ -216,7 +113,7 @@ export default function HospitalDashboard() {
             <Hospital className="h-6 w-6 text-blue-600" />
             <div>
               <h1 className="text-lg font-bold text-gray-900 truncate">
-                City General
+                {user?.name ?? "Hospital Admin 1"}
               </h1>
               <p className="text-xs text-gray-500">Hospital Portal</p>
             </div>

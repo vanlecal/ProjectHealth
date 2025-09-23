@@ -38,6 +38,7 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
+import UpdateHospital from "./UpdateHospital";
 
 // Types
 interface HospitalInfo {
@@ -199,133 +200,7 @@ export default function MySettings() {
 
         {/* Hospital Information */}
         <TabsContent value="hospital" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Hospital className="mr-2 h-5 w-5" />
-                Hospital Information
-              </CardTitle>
-              <CardDescription>
-                Basic information about your hospital
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <Label htmlFor="hospital-name">Hospital Name</Label>
-                  <Input
-                    id="hospital-name"
-                    value={hospitalInfo.name}
-                    onChange={(e) => setHospitalInfo(prev => ({ ...prev, name: e.target.value }))}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="license">License Number</Label>
-                  <Input
-                    id="license"
-                    value={hospitalInfo.license}
-                    onChange={(e) => setHospitalInfo(prev => ({ ...prev, license: e.target.value }))}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="address">Address</Label>
-                <Textarea
-                  id="address"
-                  rows={2}
-                  value={hospitalInfo.address}
-                  onChange={(e) => setHospitalInfo(prev => ({ ...prev, address: e.target.value }))}
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div>
-                  <Label htmlFor="phone">Phone</Label>
-                  <Input
-                    id="phone"
-                    value={hospitalInfo.phone}
-                    onChange={(e) => setHospitalInfo(prev => ({ ...prev, phone: e.target.value }))}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={hospitalInfo.email}
-                    onChange={(e) => setHospitalInfo(prev => ({ ...prev, email: e.target.value }))}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="emergency">Emergency Contact</Label>
-                  <Input
-                    id="emergency"
-                    value={hospitalInfo.emergencyContact}
-                    onChange={(e) => setHospitalInfo(prev => ({ ...prev, emergencyContact: e.target.value }))}
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <Label htmlFor="established">Year Established</Label>
-                  <Input
-                    id="established"
-                    value={hospitalInfo.established}
-                    onChange={(e) => setHospitalInfo(prev => ({ ...prev, established: e.target.value }))}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="website">Website</Label>
-                  <Input
-                    id="website"
-                    value={hospitalInfo.website}
-                    onChange={(e) => setHospitalInfo(prev => ({ ...prev, website: e.target.value }))}
-                  />
-                </div>
-              </div>
-
-              <Separator />
-
-              <div>
-                <Label className="text-base font-medium">Medical Specialties</Label>
-                <p className="text-sm text-gray-600 mb-4">
-                  Manage the medical specialties offered at your hospital
-                </p>
-                
-                <div className="flex gap-2 mb-4">
-                  <Input
-                    placeholder="Add new specialty"
-                    value={newSpecialty}
-                    onChange={(e) => setNewSpecialty(e.target.value)}
-                    onKeyPress={(e) => e.key === "Enter" && addSpecialty()}
-                  />
-                  <Button onClick={addSpecialty} variant="outline">
-                    Add
-                  </Button>
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                  {hospitalInfo.specialties.map((specialty) => (
-                    <Badge
-                      key={specialty}
-                      variant="secondary"
-                      className="flex items-center gap-1 pr-1"
-                    >
-                      {specialty}
-                      <button
-                        onClick={() => removeSpecialty(specialty)}
-                        className="ml-1 hover:bg-gray-200 rounded-full p-0.5"
-                      >
-                        ×
-                      </button>
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <UpdateHospital/>
         </TabsContent>
 
         {/* Notifications */}

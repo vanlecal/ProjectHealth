@@ -78,3 +78,35 @@ exports.getHospitalProfile = async (req, res) => {
   }
 };
 
+// Update hospital profile (excluding password)
+exports.updateHospitalProfile = async (req, res) => {
+  try {
+    const updates = { ...req.body };
+
+    // Prevent updating password directly here
+    if (updates.password) {
+      delete updates.password;
+    }
+
+    // Ensure hospital exists
+    const hospital = await Hospital.findById(req.userId);
+    if (!hospital) {
+      return res.status(404).json({ message: 'Hospital not found' });
+    }
+
+    // Apply updates
+    Object.assign(hospital, updates);
+    await hospital.save();
+
+    res.status(200).json({
+      message: 'Hospital profile updated successfully',
+      hospital: {
+        ...hospital._doc,
+        password: undefined // hide password in response
+      }
+    });
+  } catch (err) {
+    console.error('Update hospital profile error:', err.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
