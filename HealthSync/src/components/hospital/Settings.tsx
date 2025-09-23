@@ -19,10 +19,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import {
   Select,
@@ -41,17 +38,6 @@ import { Separator } from "@/components/ui/separator";
 import UpdateHospital from "./UpdateHospital";
 
 // Types
-interface HospitalInfo {
-  name: string;
-  address: string;
-  phone: string;
-  email: string;
-  license: string;
-  specialties: string[];
-  established: string;
-  website: string;
-  emergencyContact: string;
-}
 
 interface NotificationSettings {
   emailNotifications: boolean;
@@ -80,17 +66,6 @@ interface SystemSettings {
 }
 
 export default function MySettings() {
-  const [hospitalInfo, setHospitalInfo] = useState<HospitalInfo>({
-    name: "City General Hospital",
-    address: "456 Health Ave, Medical City, MC 12345",
-    phone: "+1 (555) 987-6543",
-    email: "admin@citygeneralhospital.com",
-    license: "HOS-2024-001",
-    specialties: ["Cardiology", "Neurology", "Orthopedics", "Emergency Medicine"],
-    established: "1985",
-    website: "www.citygeneralhospital.com",
-    emergencyContact: "+1 (555) 911-HELP",
-  });
 
   const [notifications, setNotifications] = useState<NotificationSettings>({
     emailNotifications: true,
@@ -118,7 +93,6 @@ export default function MySettings() {
     maintenanceMode: false,
   });
 
-  const [newSpecialty, setNewSpecialty] = useState("");
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
 
   const handleSaveSettings = () => {
@@ -130,22 +104,6 @@ export default function MySettings() {
     }, 1000);
   };
 
-  const addSpecialty = () => {
-    if (newSpecialty.trim() && !hospitalInfo.specialties.includes(newSpecialty.trim())) {
-      setHospitalInfo(prev => ({
-        ...prev,
-        specialties: [...prev.specialties, newSpecialty.trim()]
-      }));
-      setNewSpecialty("");
-    }
-  };
-
-  const removeSpecialty = (specialty: string) => {
-    setHospitalInfo(prev => ({
-      ...prev,
-      specialties: prev.specialties.filter(s => s !== specialty)
-    }));
-  };
 
   return (
     <div className="space-y-6">
