@@ -16,19 +16,6 @@ import { useAuth } from "@/context/AuthContext";
 import RecentAppointments from "./RecentAppointments";
 
 
-// Mock data
-const patientData = {
-  name: "Sarah Johnson",
-  nationalId: "NI123456789",
-  dateOfBirth: "1985-03-15 C",
-  phone: "+1 (555) 123-4567",
-  email: "sarah.johnson@email.com",
-  address: "123 Main St, City, State 12345",
-  bloodType: "O+",
-  allergies: ["Penicillin", "Shellfish"],
-};
-
-
 export default function HomeTab() {
   const { user } = useAuth();
 
@@ -82,7 +69,7 @@ export default function HomeTab() {
                             Blood Type
                           </p>
                           <p className="text-lg lg:text-2xl font-bold">
-                            {patientData.bloodType}
+                            {user?.bloodType}
                           </p>
                         </div>
                       </div>

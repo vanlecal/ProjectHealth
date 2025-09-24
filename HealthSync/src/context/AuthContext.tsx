@@ -19,6 +19,7 @@ interface User {
   IdCard: string;
   region: string;
   address: string;
+  bloodType: string;
   role: string;
 }
 
