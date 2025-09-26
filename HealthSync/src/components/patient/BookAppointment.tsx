@@ -29,6 +29,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { API_URL } from "@/utils/api"
 
 interface HospitalType {
   _id: string;
@@ -63,7 +64,7 @@ function BookAppointment() {
     const fetchHospitals = async () => {
       try {
         const res = await fetch(
-          "http://localhost:5000/api/patient/gethospitals",
+          `${API_URL}/api/patient/gethospitals`,
           {
             method: "GET",
             headers: {
@@ -119,7 +120,7 @@ function BookAppointment() {
         return;
       }
 
-      const res = await fetch("http://localhost:5000/api/patient/book", {
+      const res = await fetch(`${API_URL}/api/patient/book`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

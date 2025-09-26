@@ -27,6 +27,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import AddAppointment from "./Add-appointment";
+import { API_URL } from "@/utils/api"
 
 type RawStatus = string;
 
@@ -95,7 +96,7 @@ export default function Appointments() {
       try {
         const token = getToken();
         const res = await fetch(
-          "http://localhost:5000/api/hospital/appointments",
+          `${API_URL}/hospital/appointments`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -146,7 +147,7 @@ export default function Appointments() {
     try {
       const token = getToken();
       const res = await fetch(
-        `http://localhost:5000/api/hospital/appointments/${appointmentId}/status`,
+        `${API_URL}/hospital/appointments/${appointmentId}/status`,
         {
           method: "PATCH",
           headers: {
