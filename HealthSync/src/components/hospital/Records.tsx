@@ -161,14 +161,6 @@ export default function Records() {
   const [doctorFilter, setDoctorFilter] = useState("All Doctors");
   const [dateFilter, setDateFilter] = useState("");
   const [showAddRecordDialog, setShowAddRecordDialog] = useState(false);
-  const [newRecord, setNewRecord] = useState({
-    patientId: "",
-    diagnosis: "",
-    doctor: "",
-    notes: "",
-    vitals: { bp: "", hr: "", temp: "", weight: "" },
-    prescriptions: [{ medication: "", dosage: "", frequency: "", duration: "" }],
-  });
 
   // Filter records
   const filteredRecords = records.filter((record) => {
@@ -184,21 +176,6 @@ export default function Records() {
     return matchesSearch && matchesType && matchesDoctor && matchesDate;
   });
 
-  const addPrescription = () => {
-    setNewRecord(prev => ({
-      ...prev,
-      prescriptions: [...prev.prescriptions, { medication: "", dosage: "", frequency: "", duration: "" }]
-    }));
-  };
-
-  const updatePrescription = (index: number, field: string, value: string) => {
-    setNewRecord(prev => ({
-      ...prev,
-      prescriptions: prev.prescriptions.map((prescription, i) => 
-        i === index ? { ...prescription, [field]: value } : prescription
-      )
-    }));
-  };
 
   const getRecordTypeColor = (type: string) => {
     switch (type) {

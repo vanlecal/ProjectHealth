@@ -10,8 +10,7 @@ router.post('/login', hospitalController.loginHospital);
 router.get('/me', protect, hospitalController.getHospitalProfile);
 router.put('/me', protect, hospitalController.updateHospitalProfile);
 router.get('/appointments', protect, appointmentController.getHospitalAppointments);
-router.put(
-  "/appointments/:appointmentId/status",protect, appointmentController.updateAppointmentStatus
+router.patch('/appointments/:appointmentId/status',protect, appointmentController.updateAppointmentStatus
 );
 
 

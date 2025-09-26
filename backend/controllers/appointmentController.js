@@ -78,9 +78,10 @@ exports.updateAppointmentStatus = async (req, res) => {
     const hospitalId = req.userId; // from authMiddleware (hospital logged in)
     const { appointmentId } = req.params;
     const { status } = req.body; // expected values: 'confirmed', 'denied', 'completed'
+    console.log(req.body);
 
     // validate status
-    const allowedStatuses = ["confirmed", "denied", "completed"];
+    const allowedStatuses = ["Confirmed", "Cancelled", "Completed"];
     if (!allowedStatuses.includes(status)) {
       return res.status(400).json({ message: "Invalid status value" });
     }
