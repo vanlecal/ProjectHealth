@@ -1,4 +1,9 @@
 # Logs
+Environment Variables
+.env
+
+
+# Logs
 logs
 *.log
 npm-debug.log*
