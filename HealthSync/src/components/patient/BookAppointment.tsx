@@ -64,7 +64,7 @@ function BookAppointment() {
     const fetchHospitals = async () => {
       try {
         const res = await fetch(
-          `${API_URL}/api/patient/gethospitals`,
+          `${API_URL}/patient/gethospitals`,
           {
             method: "GET",
             headers: {
@@ -120,7 +120,7 @@ function BookAppointment() {
         return;
       }
 
-      const res = await fetch(`${API_URL}/api/patient/book`, {
+      const res = await fetch(`${API_URL}/patient/book`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

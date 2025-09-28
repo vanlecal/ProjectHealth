@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { API_URL } from "@/utils/api"
 
 interface Appointment {
   _id: string;
@@ -26,7 +27,7 @@ export default function RecentAppointments() {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/patient/myappointments", {
+        const res = await fetch(`${API_URL}/patient/myappointments`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

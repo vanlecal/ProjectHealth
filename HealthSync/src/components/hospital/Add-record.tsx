@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Plus } from "lucide-react";
+import { useAuth } from "@/context/HospitalAuthContext";
 import { API_URL } from "@/utils/api"
 
 // ------------------ TYPES ------------------
@@ -48,6 +49,7 @@ interface MedicalRecordForm {
 
 // ------------------ COMPONENT ------------------
 export default function AddRecord() {
+  const { user } = useAuth();
   const [showDialog, setShowDialog] = useState(false);
 
   const [newRecord, setNewRecord] = useState<MedicalRecordForm>({
@@ -90,10 +92,11 @@ export default function AddRecord() {
     // Map frontend form to backend payload
     const payload = {
       patient: newRecord.patientId, // expects patient _id
-      hospital: "68b1ec308f13038afa7efddd", // TODO: replace with actual hospital id (can be from context or prop)
+      hospital: user?._id, // TODO: replace with actual hospital id (can be from context or prop)
       doctor: newRecord.doctor,
       diagnosis: newRecord.diagnosis,
       notes: newRecord.notes,
+      recordType: newRecord.recordType,
       vitals: newRecord.vitals,
       prescriptions: newRecord.prescriptions,
     };

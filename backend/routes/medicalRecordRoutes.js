@@ -9,6 +9,9 @@ router.post('/', protect, medicalRecordController.addMedicalRecord);
 // get all records for a patient
 router.get('/:patientId', protect, medicalRecordController.getMedicalRecords);
 
+// get all patient records for a hospital
+router.get('/records/hospital', protect, medicalRecordController.getAllPatientRecordsForHospital);
+
 // get patient records by ID card number
 router.get('/card/:IdCard', medicalRecordController.getMedicalRecordsByCard);
 

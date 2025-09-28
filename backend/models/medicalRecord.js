@@ -18,6 +18,7 @@ const medicalRecordSchema = new mongoose.Schema(
 
     diagnosis: { type: String, required: true },
     notes: { type: String },
+    recordType: { type: String },
 
     vitals: {
       bp: String,

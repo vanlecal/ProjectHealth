@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   FileText,
   Plus,
@@ -48,7 +48,7 @@ interface Prescription {
 }
 
 interface MedicalRecord {
-  id: number;
+  id: string;
   patientId: string;
   patientName: string;
   date: string;
@@ -61,121 +61,70 @@ interface MedicalRecord {
   recordType: string;
 }
 
-// Mock Data
-const allRecords: MedicalRecord[] = [
-  {
-    id: 1,
-    patientId: "NI123456789",
-    patientName: "Sarah Johnson",
-    date: "2024-09-08",
-    hospital: "City General Hospital",
-    doctor: "Dr. Michael Chen",
-    diagnosis: "Hypertension Follow-up",
-    prescriptions: [
-      {
-        medication: "Lisinopril",
-        dosage: "10mg",
-        frequency: "Once daily",
-        duration: "30 days",
-      },
-    ],
-    notes: "Patient responding well to treatment. Blood pressure stable at 130/85.",
-    vitals: { bp: "130/85", hr: "72", temp: "98.6°F", weight: "165 lbs" },
-    recordType: "Follow-up",
-  },
-  {
-    id: 2,
-    patientId: "NI987654321",
-    patientName: "Robert Smith",
-    date: "2024-09-07",
-    hospital: "City General Hospital",
-    doctor: "Dr. Lisa Rodriguez",
-    diagnosis: "Type 2 Diabetes Management",
-    prescriptions: [
-      {
-        medication: "Metformin",
-        dosage: "500mg",
-        frequency: "Twice daily",
-        duration: "90 days",
-      },
-      {
-        medication: "Glipizide",
-        dosage: "5mg",
-        frequency: "Once daily",
-        duration: "90 days",
-      },
-    ],
-    notes: "HbA1c improved to 7.2%. Continue current medication regimen.",
-    vitals: { bp: "140/88", hr: "78", temp: "98.4°F", weight: "180 lbs" },
-    recordType: "Consultation",
-  },
-  {
-    id: 3,
-    patientId: "NI456789123",
-    patientName: "Emily Davis",
-    date: "2024-09-06",
-    hospital: "City General Hospital",
-    doctor: "Dr. James Wilson",
-    diagnosis: "Migraine Treatment",
-    prescriptions: [
-      {
-        medication: "Sumatriptan",
-        dosage: "50mg",
-        frequency: "As needed",
-        duration: "30 days",
-      },
-    ],
-    notes: "Migraine frequency reduced. Patient educated on trigger avoidance.",
-    vitals: { bp: "120/80", hr: "68", temp: "98.2°F", weight: "140 lbs" },
-    recordType: "Treatment",
-  },
-  {
-    id: 4,
-    patientId: "NI321654987",
-    patientName: "Maria Garcia",
-    date: "2024-09-05",
-    hospital: "City General Hospital",
-    doctor: "Dr. James Wilson",
-    diagnosis: "Emergency - Chest Pain",
-    prescriptions: [
-      {
-        medication: "Aspirin",
-        dosage: "81mg",
-        frequency: "Once daily",
-        duration: "Ongoing",
-      },
-    ],
-    notes: "ECG normal. Chest pain attributed to musculoskeletal strain. Discharged home.",
-    vitals: { bp: "145/92", hr: "88", temp: "99.1°F", weight: "155 lbs" },
-    recordType: "Emergency",
-  },
-];
-
 const recordTypes = ["All Types", "Consultation", "Follow-up", "Treatment", "Emergency", "Diagnostic"];
-const doctors = ["All Doctors", "Dr. Michael Chen", "Dr. Lisa Rodriguez", "Dr. James Wilson"];
+const doctors = ["All Doctors"];
 
 export default function Records() {
-  const [records, setRecords] = useState<MedicalRecord[]>(allRecords);
+  const [records, setRecords] = useState<MedicalRecord[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [recordTypeFilter, setRecordTypeFilter] = useState("All Types");
   const [doctorFilter, setDoctorFilter] = useState("All Doctors");
   const [dateFilter, setDateFilter] = useState("");
   const [showAddRecordDialog, setShowAddRecordDialog] = useState(false);
 
+  // Fetch from backend
+  useEffect(() => {
+    const fetchRecords = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch("http://localhost:5000/api/medical-records/records/hospital", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!res.ok) throw new Error("Failed to fetch records");
+
+        const data = await res.json();
+
+        // Map backend -> frontend shape
+        const mappedRecords: MedicalRecord[] = data.map((rec: any) => ({
+          id: rec._id,
+          patientId: rec.patient?.IdCard || "Unknown",
+          patientName: rec.patient?.name || "Unknown",
+          date: rec.date,
+          hospital: rec.hospital?.name || "Unknown",
+          doctor: rec.doctor,
+          diagnosis: rec.diagnosis,
+          prescriptions: rec.prescriptions || [],
+          notes: rec.notes,
+          vitals: rec.vitals || { bp: "", hr: "", temp: "", weight: "" },
+          recordType: rec.recordType || "General",
+        }));
+
+        setRecords(mappedRecords);
+      } catch (err) {
+        console.error("Error fetching records:", err);
+      }
+    };
+
+    fetchRecords();
+  }, []);
+
   // Filter records
   const filteredRecords = records.filter((record) => {
-    const matchesSearch = 
+    const matchesSearch =
       record.patientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       record.patientId.toLowerCase().includes(searchTerm.toLowerCase()) ||
       record.diagnosis.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     const matchesType = recordTypeFilter === "All Types" || record.recordType === recordTypeFilter;
     const matchesDoctor = doctorFilter === "All Doctors" || record.doctor === doctorFilter;
-    const matchesDate = !dateFilter || record.date === dateFilter;
-    
+    const matchesDate = !dateFilter || record.date.startsWith(dateFilter);
+
     return matchesSearch && matchesType && matchesDoctor && matchesDate;
   });
-
 
   const getRecordTypeColor = (type: string) => {
     switch (type) {
@@ -205,8 +154,7 @@ export default function Records() {
             Manage and view patient medical records
           </p>
         </div>
-        <AddRecord/>
-
+        <AddRecord />
       </div>
 
       {/* Filters */}
@@ -229,7 +177,7 @@ export default function Records() {
                 />
               </div>
             </div>
-            
+
             <div>
               <Label>Record Type</Label>
               <Select value={recordTypeFilter} onValueChange={setRecordTypeFilter}>
@@ -253,9 +201,9 @@ export default function Records() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {doctors.map((doctor) => (
-                    <SelectItem key={doctor} value={doctor}>
-                      {doctor}
+                  {[...new Set(["All Doctors", ...records.map((r) => r.doctor)])].map((doc) => (
+                    <SelectItem key={doc} value={doc}>
+                      {doc}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -273,8 +221,8 @@ export default function Records() {
             </div>
 
             <div className="flex items-end">
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 className="w-full"
                 onClick={() => {
                   setSearchTerm("");
@@ -302,7 +250,7 @@ export default function Records() {
                     <div className="flex items-center space-x-3">
                       <Avatar className="h-10 w-10">
                         <AvatarFallback>
-                          {record.patientName.split(" ").map(n => n[0]).join("")}
+                          {record.patientName.split(" ").map((n) => n[0]).join("")}
                         </AvatarFallback>
                       </Avatar>
                       <div>
