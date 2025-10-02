@@ -17,5 +17,8 @@ router.post('/book', protect, bookAppointment);
 // Get all appointments of logged-in patient
 router.get('/myappointments', protect, getPatientAppointments);
 
+// Get user statistics
+router.get('/stat', protect, patientController.getPatientDashboardStats);
+
 
 module.exports = router;

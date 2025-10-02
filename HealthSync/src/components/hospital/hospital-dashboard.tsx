@@ -78,7 +78,6 @@ export default function HospitalDashboard() {
   const [showAddRecordDialog, setShowAddRecordDialog] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const { user } = useAuth();
-  console.log("Authenticated Hospital User:", user);
 
   const handleLogout = () => {
     localStorage.removeItem("hospitalToken");
@@ -122,9 +121,9 @@ export default function HospitalDashboard() {
             <Button variant="ghost" size="icon">
               <Bell className="h-5 w-5" />
             </Button>
-            <Avatar className="h-8 w-8">
-              <AvatarFallback className="text-xs">CG</AvatarFallback>
-            </Avatar>
+            <Button variant="ghost" size="icon" onClick={handleLogout}>
+              <LogOut className="h-5 w-5" />
+            </Button>
           </div>
         </div>
       </header>
@@ -149,12 +148,9 @@ export default function HospitalDashboard() {
             </Button>
             <Avatar>
               <AvatarImage src="/placeholder-medicare.jpg" />
-              <AvatarFallback>CG</AvatarFallback>
+              <AvatarFallback>MDD</AvatarFallback>
             </Avatar>
-            <div className="text-sm">
-              <p className="font-medium">Dr. Admin</p>
-              <p className="text-gray-500">Administrator</p>
-            </div>
+
             <Button variant="ghost" size="icon" onClick={handleLogout}>
               <LogOut className="h-5 w-5" />
             </Button>

@@ -2,6 +2,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/patientModel');
 const Hospital = require('../models/hospitalModel');
+const Appointment = require('../models/appointmentModel');
+const MedicalRecord = require('../models/MedicalRecord');
 
 
 exports.registerUser = async (req, res) => {
@@ -112,5 +114,49 @@ exports.getAllHospitals = async (req, res) => {
   } catch (err) {
     console.error('Fetch hospitals error:', err.message);
     res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+// @desc    Get patient dashboard stats
+// @route   GET /api/patient/dashboard
+// @access  Private (Patient only)
+exports.getPatientDashboardStats = async (req, res) => {
+  try {
+    const patientId = req.userId; // pulled from JWT via middleware
+
+    // 1. Get next appointment
+    const nextAppointment = await Appointment.findOne({
+      patient: patientId,
+      date: { $gte: new Date() },
+      status: { $in: ["Pending", "Confirmed"] },
+    })
+      .sort({ date: 1 });
+
+    // 2. Count medical records
+    const medicalRecordsCount = await MedicalRecord.countDocuments({
+      patient: patientId,
+    });
+
+    // 3. Distinct hospitals visited
+    const hospitalIds = await MedicalRecord.distinct("hospital", {
+      patient: patientId,
+    });
+    const hospitalsVisitedCount = hospitalIds.length;
+
+    // 4. Count all appointments
+    const appointmentsCount = await Appointment.countDocuments({
+      patient: patientId,
+    });
+
+    res.status(200).json({
+      nextAppointment: nextAppointment || null,
+      medicalRecordsCount,
+      hospitalsVisitedCount,
+      appointmentsCount,
+    });
+  } catch (error) {
+    console.error("Error fetching patient dashboard stats:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };

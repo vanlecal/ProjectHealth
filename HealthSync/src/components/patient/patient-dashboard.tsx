@@ -3,6 +3,7 @@ import {
   Calendar,
   Home,
   User,
+  LogOut,
   FileText,
   Bell,
   Heart,
@@ -27,7 +28,11 @@ export default function PatientDashboard() {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("home");
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  console.log("User in dashboard:", user);
+
+    const handleLogout = () => {
+    localStorage.removeItem("hospitalToken");
+    window.location.href = "/patient/login";
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -59,12 +64,15 @@ export default function PatientDashboard() {
             </Button>
             <Avatar className="h-8 w-8 lg:h-10 lg:w-10">
               <AvatarImage src="/placeholder-user.jpg" />
-              <AvatarFallback>SJ</AvatarFallback>
+              <AvatarFallback>MDD</AvatarFallback>
             </Avatar>
             <div className="text-sm hidden md:block">
               <p className="font-medium">{user?.name}</p>
               <p className="text-gray-500">Patient</p>
             </div>
+            <Button variant="ghost" size="icon" onClick={handleLogout}>
+              <LogOut className="h-5 w-5" />
+            </Button>
           </div>
         </div>
       </header>

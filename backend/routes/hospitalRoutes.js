@@ -12,6 +12,6 @@ router.put('/me', protect, hospitalController.updateHospitalProfile);
 router.get('/appointments', protect, appointmentController.getHospitalAppointments);
 router.patch('/appointments/:appointmentId/status',protect, appointmentController.updateAppointmentStatus
 );
-
+router.post('/appointments/book-for-patient', protect, appointmentController.bookAppointmentForPatient);
 
 module.exports = router;

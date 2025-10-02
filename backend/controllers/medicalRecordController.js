@@ -1,4 +1,4 @@
-const MedicalRecord = require('../models/medicalRecord');
+const MedicalRecord = require('../models/MedicalRecord');
 const Patient = require('../models/patientModel');
 const Hospital = require('../models/hospitalModel');
 
