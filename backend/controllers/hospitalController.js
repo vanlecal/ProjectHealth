@@ -1,6 +1,9 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Hospital = require('../models/hospitalModel');
+const Appointment = require("../models/appointmentModel");
+const MedicalRecord = require("../models/MedicalRecord");
+const Patient = require("../models/patientModel");
 
 
 // Register hospital
@@ -110,3 +113,71 @@ exports.updateHospitalProfile = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+
+
+// @desc    Get hospital stats
+// @route   GET /api/hospital/stats
+// @access  Private (Hospital only)
+exports.getHospitalStats = async (req, res) => {
+  try {
+    const hospitalId = req.userId; // from auth middleware
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    // Ensure hospital exists
+    const hospital = await Hospital.findById(hospitalId);
+    if (!hospital) {
+      return res.status(404).json({ message: "Hospital not found" });
+    }
+
+    // 1. Total unique patients who visited the hospital
+    const totalPatients = await MedicalRecord.distinct("patient", {
+      hospital: hospitalId,
+    });
+
+    // 2. Total patients who visited today
+    const patientsToday = await MedicalRecord.distinct("patient", {
+      hospital: hospitalId,
+      createdAt: { $gte: today, $lt: tomorrow },
+    });
+
+    // 3. Total appointments scheduled for today (to be addressed today)
+    const appointmentsToday = await Appointment.countDocuments({
+      hospital: hospitalId,
+      date: { $gte: today, $lt: tomorrow },
+    });
+
+    // 4. Total appointments created today (regardless of scheduled date)
+    const appointmentsMadeToday = await Appointment.countDocuments({
+      hospital: hospitalId,
+      createdAt: { $gte: today, $lt: tomorrow },
+    });
+
+    // 5. Total medical records for this hospital
+    const patientRecords = await MedicalRecord.countDocuments({
+      hospital: hospitalId,
+    });
+
+    // 6. Total medical records created today
+    const patientRecordsToday = await MedicalRecord.countDocuments({
+      hospital: hospitalId,
+      createdAt: { $gte: today, $lt: tomorrow },
+    });
+
+    res.status(200).json({
+      totalPatients: totalPatients.length,
+      patientsToday: patientsToday.length,
+      appointmentsToday,
+      appointmentsMadeToday,
+      patientRecords,
+      patientRecordsToday,
+    });
+  } catch (error) {
+    console.error("Error fetching hospital stats:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+

@@ -13,5 +13,6 @@ router.get('/appointments', protect, appointmentController.getHospitalAppointmen
 router.patch('/appointments/:appointmentId/status',protect, appointmentController.updateAppointmentStatus
 );
 router.post('/appointments/book-for-patient', protect, appointmentController.bookAppointmentForPatient);
+router.get('/stats', protect, hospitalController.getHospitalStats);
 
 module.exports = router;

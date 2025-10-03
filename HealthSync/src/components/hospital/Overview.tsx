@@ -1,11 +1,7 @@
-import React from "react";
 import {
   Search,
   Plus,
   Calendar,
-  Users,
-  Activity,
-  FileText,
   Clock,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -18,10 +14,9 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import OverviewCards from "./overview-cards";
 
 // Types
-type LucideIcon = React.ComponentType<React.SVGProps<SVGSVGElement>>;
-
 type Status =
   | "stable"
   | "monitoring"
@@ -30,13 +25,7 @@ type Status =
   | "confirmed"
   | string;
 
-interface DashboardStat {
-  label: string;
-  value: string;
-  change: string;
-  icon: LucideIcon;
-  color?: string;
-}
+
 
 interface RecentPatient {
   id: string;
@@ -64,36 +53,6 @@ interface OverviewProps {
 }
 
 // Mock Data
-const dashboardStats: DashboardStat[] = [
-  {
-    label: "Total Patients",
-    value: "2,847",
-    change: "+12%",
-    icon: Users,
-    color: "text-blue-600",
-  },
-  {
-    label: "Today's Appointments",
-    value: "24",
-    change: "+8%",
-    icon: Calendar,
-    color: "text-green-600",
-  },
-  {
-    label: "Records Added",
-    value: "156",
-    change: "+15%",
-    icon: FileText,
-    color: "text-purple-600",
-  },
-  {
-    label: "Active Cases",
-    value: "89",
-    change: "-3%",
-    icon: Activity,
-    color: "text-orange-600",
-  },
-];
 
 const recentPatients: RecentPatient[] = [
   {
@@ -186,34 +145,7 @@ export default function Overview({ setActiveTab, setShowAddRecordDialog }: Overv
 
       {/* Stats Cards - Responsive Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6">
-        {dashboardStats.map((stat, index) => (
-          <Card key={index}>
-            <CardContent className="p-3 lg:p-6">
-              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-                <div className="mb-2 lg:mb-0">
-                  <p className="text-xs lg:text-sm font-medium text-gray-600 truncate">
-                    {stat.label}
-                  </p>
-                  <p className="text-lg lg:text-2xl font-bold text-gray-900">
-                    {stat.value}
-                  </p>
-                  <p
-                    className={`text-xs lg:text-sm ${
-                      stat.change.startsWith("+")
-                        ? "text-green-600"
-                        : "text-red-600"
-                    }`}
-                  >
-                    {stat.change}
-                  </p>
-                </div>
-                <stat.icon
-                  className={`h-6 w-6 lg:h-8 lg:w-8 ${stat.color} lg:ml-4`}
-                />
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+        <OverviewCards />
       </div>
 
       {/* Recent Patients and Today's Appointments - Stack on Mobile */}
