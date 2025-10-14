@@ -8,6 +8,7 @@ import UserDashboard from "./pages/patient/dashboard";
 import HospitalRegister from "./pages/hospital/HospitalRegister";
 import HospitalUserDashboard from "./pages/hospital/dashboard";
 import HospitalLogin from "./pages/hospital/HospitalLogin";
+import MDD from "./pages/MDD";
 
 function AppRoutes() {
   return (
@@ -16,6 +17,10 @@ function AppRoutes() {
         {/* Homepage */}
         <Route path="/" element={<Homepage />} />
         <Route path="/Home" element={<Homepage />} />
+
+        {/* MDD */}
+        <Route path="/mdd" element={<MDD />} />
+        <Route path="/MDD" element={<MDD />} />
 
         {/* Patient Routes */}
         <Route path="/patient" element={<PatientDashboard />} />
