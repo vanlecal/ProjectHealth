@@ -68,8 +68,8 @@ export default function OverviewCards() {
     },
     {
       label: "Active Cases",
-      value: "300", // you didn’t provide an API field, so keep static for now
-      change: "-3%",
+      value: "0", // you didn’t provide an API field, so keep static for now
+      change: "0%",
       icon: Activity,
       color: "text-orange-600",
     },

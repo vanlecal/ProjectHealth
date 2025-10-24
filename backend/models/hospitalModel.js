@@ -1,3 +1,4 @@
+// backend/models/hospitalModel.js
 const mongoose = require('mongoose');
 
 const hospitalSchema = new mongoose.Schema({
@@ -23,7 +24,14 @@ const hospitalSchema = new mongoose.Schema({
   departments: [{ type: String }],
   Specialties: [{ type: String }],
   establishedDate: { type: Date, required: false }, // When hospital was founded
-  emergencyAvailable: { type: Boolean, default: false } // 24/7 emergency services
+  emergencyAvailable: { type: Boolean, default: false }, // 24/7 emergency services
+  staff: [
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Staff'
+  }
+]
+
 });
 
 const Hospital = mongoose.model('HospitalUser', hospitalSchema);

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -20,9 +20,8 @@ import {
 } from "@/components/ui/select";
 import { Plus } from "lucide-react";
 import { useAuth } from "@/context/HospitalAuthContext";
-import { API_URL } from "@/utils/api"
+import { API_URL } from "@/utils/api";
 
-// ------------------ TYPES ------------------
 interface Prescription {
   medication: string;
   dosage: string;
@@ -40,6 +39,7 @@ interface Vitals {
 interface MedicalRecordForm {
   patientId: string;
   diagnosis: string;
+  specialty: string;
   doctor: string;
   recordType: string;
   vitals: Vitals;
@@ -47,14 +47,24 @@ interface MedicalRecordForm {
   notes: string;
 }
 
-// ------------------ COMPONENT ------------------
+interface StaffMember {
+  _id: string;
+  name: string;
+  specialty: string;
+}
+
 export default function AddRecord() {
   const { user } = useAuth();
   const [showDialog, setShowDialog] = useState(false);
+  const [staff, setStaff] = useState<StaffMember[]>([]);
+  const [specialties, setSpecialties] = useState<string[]>([]);
+  const [filteredDoctors, setFilteredDoctors] = useState<StaffMember[]>([]);
+  const [loadingDoctors, setLoadingDoctors] = useState(false);
 
   const [newRecord, setNewRecord] = useState<MedicalRecordForm>({
     patientId: "",
     diagnosis: "",
+    specialty: "",
     doctor: "",
     recordType: "",
     vitals: { bp: "", hr: "", temp: "", weight: "" },
@@ -86,20 +96,66 @@ export default function AddRecord() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
+  // Fetch hospital staff when dialog opens
+  useEffect(() => {
+    if (showDialog && user?._id) fetchHospitalStaff();
+  }, [showDialog]);
+
+  const fetchHospitalStaff = async () => {
+  try {
+    const res = await fetch(`${API_URL}/patient/hospital-staff/${user?._id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+      },
+    });
+    if (!res.ok) throw new Error("Failed to load staff");
+
+    const data = await res.json();
+
+    if (data.success && Array.isArray(data.staff)) {
+      // Correctly map specialization instead of specialty
+      const formattedStaff: StaffMember[] = data.staff.map((s: any) => ({
+        _id: s._id,
+        name: s.name,
+        specialty: s.specialization || "General",
+      }));
+
+      setStaff(formattedStaff);
+
+      const uniqueSpecs = Array.from(
+        new Set<string>(formattedStaff.map((s) => s.specialty))
+      ).filter(Boolean);
+
+      setSpecialties(uniqueSpecs);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+
+  const handleSpecialtyChange = (spec: string) => {
+    setNewRecord({ ...newRecord, specialty: spec, doctor: "" });
+    const filtered = staff.filter((s) => s.specialty === spec);
+    setFilteredDoctors(filtered);
+  };
+
   const handleSave = async () => {
     setSaving(true);
     setError("");
-    // Map frontend form to backend payload
+
     const payload = {
-      patient: newRecord.patientId, // expects patient _id
-      hospital: user?._id, // TODO: replace with actual hospital id (can be from context or prop)
+      patient: newRecord.patientId,
+      hospital: user?._id,
       doctor: newRecord.doctor,
+      specialty: newRecord.specialty,
       diagnosis: newRecord.diagnosis,
       notes: newRecord.notes,
       recordType: newRecord.recordType,
       vitals: newRecord.vitals,
       prescriptions: newRecord.prescriptions,
     };
+
     try {
       const res = await fetch(`${API_URL}/medical-records/`, {
         method: "POST",
@@ -113,11 +169,12 @@ export default function AddRecord() {
         const errData = await res.json();
         throw new Error(errData.message || "Failed to save record");
       }
-      // Optionally handle success (e.g., show toast, refresh list)
+
       setShowDialog(false);
       setNewRecord({
         patientId: "",
         diagnosis: "",
+        specialty: "",
         doctor: "",
         recordType: "",
         vitals: { bp: "", hr: "", temp: "", weight: "" },
@@ -139,7 +196,8 @@ export default function AddRecord() {
           Add Record
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
+
+      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl">
         <DialogHeader>
           <DialogTitle>Add New Medical Record</DialogTitle>
           <DialogDescription>
@@ -195,20 +253,50 @@ export default function AddRecord() {
             />
           </div>
 
-          {/* Doctor */}
+          {/* Specialty Dropdown */}
           <div>
-            <Label htmlFor="doctor">Doctor</Label>
-            <Input
-              id="doctor"
-              placeholder="Doctor's name"
-              value={newRecord.doctor}
-              onChange={(e) =>
-                setNewRecord({ ...newRecord, doctor: e.target.value })
-              }
-            />
+            <Label>Specialty</Label>
+            <Select
+              onValueChange={(val) => handleSpecialtyChange(val)}
+              value={newRecord.specialty}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select specialty" />
+              </SelectTrigger>
+              <SelectContent>
+                {specialties.map((spec) => (
+                  <SelectItem key={spec} value={spec}>
+                    {spec}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
-          {/* Vitals */}
+          {/* Doctor Dropdown */}
+          <div>
+            <Label>Doctor</Label>
+            <Select
+              onValueChange={(val) =>
+                setNewRecord({ ...newRecord, doctor: val })
+              }
+              value={newRecord.doctor}
+              disabled={!newRecord.specialty || loadingDoctors}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select doctor" />
+              </SelectTrigger>
+              <SelectContent>
+                {filteredDoctors.map((doc) => (
+                  <SelectItem key={doc._id} value={doc.name}>
+                    {doc.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Vitals Section */}
           <div>
             <Label className="text-base font-medium">Vitals</Label>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-2">
@@ -249,7 +337,7 @@ export default function AddRecord() {
             </div>
           </div>
 
-          {/* Prescriptions */}
+          {/* Prescriptions Section */}
           <div>
             <div className="flex items-center justify-between mb-2">
               <Label className="text-base font-medium">Prescriptions</Label>
@@ -312,7 +400,7 @@ export default function AddRecord() {
             />
           </div>
 
-          {/* Buttons & Error */}
+          {/* Buttons */}
           {error && <div className="text-red-500 mb-2">{error}</div>}
           <div className="flex justify-end space-x-2">
             <Button variant="outline" onClick={() => setShowDialog(false)} disabled={saving}>

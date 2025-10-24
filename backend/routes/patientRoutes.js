@@ -20,5 +20,7 @@ router.get('/myappointments', protect, getPatientAppointments);
 // Get user statistics
 router.get('/stat', protect, patientController.getPatientDashboardStats);
 
+router.get('/hospital-staff/:hospitalId', patientController.getMedicalStaffForPatients);
+
 
 module.exports = router;

@@ -5,6 +5,8 @@ const Hospital = require('../models/hospitalModel');
 const Appointment = require('../models/appointmentModel');
 const MedicalRecord = require('../models/MedicalRecord');
 
+const Staff = require('../models/Staff');
+
 
 exports.registerUser = async (req, res) => {
     try {
@@ -158,5 +160,45 @@ exports.getPatientDashboardStats = async (req, res) => {
   } catch (error) {
     console.error("Error fetching patient dashboard stats:", error);
     res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+
+
+// Get medical staff for patients (public endpoint)
+exports.getMedicalStaffForPatients = async (req, res) => {
+  try {
+    const { hospitalId } = req.params;
+
+    // Check if hospital exists
+    const hospital = await Hospital.findById(hospitalId);
+    if (!hospital) {
+      return res.status(404).json({
+        success: false,
+        message: 'Hospital not found.'
+      });
+    }
+
+    // Fetch only medical staff (doctors, nurses, lab technicians, pharmacists)
+    const medicalStaff = await Staff.find({
+      hospital: hospitalId,
+      role: { $in: ['Doctor', 'Nurse', 'Lab Technician', 'Pharmacist'] }
+    })
+      .select('name role specialization email phoneNumber') // limit fields
+      .sort({ name: 1 });
+
+    res.status(200).json({
+      success: true,
+      message: 'Medical staff retrieved successfully.',
+      total: medicalStaff.length,
+      staff: medicalStaff
+    });
+  } catch (error) {
+    console.error('Error fetching medical staff for patients:', error);
+    res.status(500).json({
+      success: false,
+      message: 'An unexpected error occurred while retrieving medical staff.',
+      error: error.message
+    });
   }
 };

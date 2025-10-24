@@ -27,6 +27,7 @@ import Patients from "./Patients";
 import Appointments from "./Appointments";
 import Records from "./Records";
 import MySettings  from "./Settings";
+import HospitalStaff from "./staff/HospitalStaff";
 
 
 /* ===== Hospital Info ===== */
@@ -51,6 +52,7 @@ const NavigationContent: React.FC<NavigationContentProps> = ({ activeTab, setAct
     { label: "Appointments", value: "appointments", icon: Calendar },
     { label: "Records", value: "records", icon: FileText },
     { label: "Settings", value: "settings", icon: Settings },
+    { label: "HospitalStaff", value: "hospitalStaff", icon: Users },
   ];
 
   return (
@@ -182,6 +184,7 @@ export default function HospitalDashboard() {
           {activeTab === "appointments" && <Appointments />}
           {activeTab === "records" && <Records />}
           {activeTab === "settings" && <MySettings />}
+          {activeTab === "hospitalStaff" && <HospitalStaff />}
         </main>
       </div>
     </div>

@@ -1,3 +1,4 @@
+// backend/models/appointmentModel.js
 const mongoose = require('mongoose');
 
 const appointmentSchema = new mongoose.Schema({

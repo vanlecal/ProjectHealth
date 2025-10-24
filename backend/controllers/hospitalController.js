@@ -4,6 +4,7 @@ const Hospital = require('../models/hospitalModel');
 const Appointment = require("../models/appointmentModel");
 const MedicalRecord = require("../models/MedicalRecord");
 const Patient = require("../models/patientModel");
+const Staff = require('../models/Staff');
 
 
 // Register hospital
@@ -181,3 +182,197 @@ exports.getHospitalStats = async (req, res) => {
   }
 };
 
+
+exports.addStaff = async (req, res) => {
+  try {
+    const hospitalId = req.userId; // from protect middleware
+    const { name, role, specialization, email, phoneNumber } = req.body;
+
+    // Validate inputs
+    if (!name || !role || !specialization || !email || !phoneNumber) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'All fields are required.' 
+      });
+    }
+
+    // Find hospital by ID from token
+    const hospital = await Hospital.findById(hospitalId);
+    if (!hospital) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'Hospital not found.' 
+      });
+    }
+
+    // Prevent duplicate staff by email under same hospital
+    const existingStaff = await Staff.findOne({ email, hospital: hospitalId });
+    if (existingStaff) {
+      return res.status(409).json({ 
+        success: false, 
+        message: 'A staff member with this email already exists for this hospital.' 
+      });
+    }
+
+    // Create and save new staff
+    const newStaff = new Staff({
+      name,
+      role,
+      specialization,
+      email,
+      phoneNumber,
+      hospital: hospitalId
+    });
+
+    await newStaff.save();
+
+    // Add staff reference to hospital document
+    hospital.staff.push(newStaff._id);
+    await hospital.save();
+
+    res.status(201).json({
+      success: true,
+      message: 'Staff added successfully.',
+      staff: newStaff
+    });
+
+  } catch (error) {
+    console.error('Error adding staff:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'An unexpected error occurred while adding staff.',
+      error: error.message 
+    });
+  }
+};
+
+
+exports.getAllStaff = async (req, res) => {
+  try {
+    const hospitalId = req.userId; // from protect middleware
+
+    // Verify hospital exists
+    const hospital = await Hospital.findById(hospitalId);
+    if (!hospital) {
+      return res.status(404).json({
+        success: false,
+        message: 'Hospital not found.'
+      });
+    }
+
+    // Fetch all staff linked to this hospital
+    const staffList = await Staff.find({ hospital: hospitalId }).sort({ dateAdded: -1 });
+
+    res.status(200).json({
+      success: true,
+      message: 'Staff list retrieved successfully.',
+      total: staffList.length,
+      staff: staffList
+    });
+  } catch (error) {
+    console.error('Error fetching staff list:', error);
+    res.status(500).json({
+      success: false,
+      message: 'An unexpected error occurred while retrieving staff list.',
+      error: error.message
+    });
+  }
+};
+
+
+exports.deleteStaff = async (req, res) => {
+  try {
+    const hospitalId = req.userId; // from protect middleware
+    const { staffId } = req.params;
+
+    // Validate input
+    if (!staffId) {
+      return res.status(400).json({
+        success: false,
+        message: 'Staff ID is required.'
+      });
+    }
+
+    // Check if hospital exists
+    const hospital = await Hospital.findById(hospitalId);
+    if (!hospital) {
+      return res.status(404).json({
+        success: false,
+        message: 'Hospital not found.'
+      });
+    }
+
+    // Check if staff belongs to this hospital
+    const staff = await Staff.findOne({ _id: staffId, hospital: hospitalId });
+    if (!staff) {
+      return res.status(404).json({
+        success: false,
+        message: 'Staff not found or does not belong to this hospital.'
+      });
+    }
+
+    // Delete the staff record
+    await Staff.findByIdAndDelete(staffId);
+
+    // Remove staff ID from hospital's staff array
+    hospital.staff = hospital.staff.filter(
+      id => id.toString() !== staffId.toString()
+    );
+    await hospital.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Staff removed successfully.'
+    });
+  } catch (error) {
+    console.error('Error deleting staff:', error);
+    res.status(500).json({
+      success: false,
+      message: 'An unexpected error occurred while deleting staff.',
+      error: error.message
+    });
+  }
+};
+
+
+exports.editStaff = async (req, res) => {
+  try {
+    const { name, role, specialization, email, phoneNumber } = req.body;
+    const staffId = req.params.staffId; // ✅ match route
+    const hospitalId = req.userId; // from protect middleware
+    console.log(req.body);
+
+    if (!staffId) {
+      return res.status(400).json({ message: 'Staff ID is required in the URL.' });
+    }
+
+    // Check hospital exists
+    const hospital = await Hospital.findById(hospitalId);
+    if (!hospital) {
+      return res.status(404).json({ message: 'Hospital not found.' });
+    }
+
+    // Find staff belonging to this hospital
+    const staff = await Staff.findOne({ _id: staffId, hospital: hospitalId });
+    if (!staff) {
+      return res.status(404).json({ message: 'Staff not found or does not belong to your hospital.' });
+    }
+
+    // Update only provided fields
+    if (name) staff.name = name;
+    if (role) staff.role = role;
+    if (specialization) staff.specialization = specialization;
+    if (email) staff.email = email;
+    if (phoneNumber) staff.phoneNumber = phoneNumber;
+
+    await staff.save();
+
+    res.status(200).json({
+      message: 'Staff details updated successfully.',
+      staff,
+    });
+  } catch (error) {
+    console.error('Error updating staff:', error);
+    res.status(500).json({ message: 'Server error. Please try again later.' });
+  }
+};
