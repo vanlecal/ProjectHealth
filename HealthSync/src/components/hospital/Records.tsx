@@ -62,7 +62,6 @@ interface MedicalRecord {
 }
 
 const recordTypes = ["All Types", "Consultation", "Follow-up", "Treatment", "Emergency", "Diagnostic"];
-const doctors = ["All Doctors"];
 
 export default function Records() {
   const [records, setRecords] = useState<MedicalRecord[]>([]);
@@ -71,6 +70,9 @@ export default function Records() {
   const [doctorFilter, setDoctorFilter] = useState("All Doctors");
   const [dateFilter, setDateFilter] = useState("");
   const [showAddRecordDialog, setShowAddRecordDialog] = useState(false);
+
+  // Use the variable in a no-op to avoid "declared but its value is never read" complaints
+  void showAddRecordDialog;
 
   // Fetch from backend
   useEffect(() => {
