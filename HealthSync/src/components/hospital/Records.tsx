@@ -31,6 +31,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import AddRecord from "./Add-record";
+import { API_URL } from "@/utils/api";
 
 // Types
 interface Vitals {
@@ -79,7 +80,7 @@ export default function Records() {
     const fetchRecords = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:5000/api/medical-records/records/hospital", {
+        const res = await fetch(`${API_URL}/medical-records/records/hospital`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "../ui/card";
 import { LucideIcon, Users, Calendar, FileText, Activity } from "lucide-react";
+import { API_URL } from "@/utils/api";
 
 interface DashboardStat {
   label: string;
@@ -17,7 +18,7 @@ export default function OverviewCards() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/hospital/stats", {
+        const res = await fetch(`${API_URL}/hospital/stats`, {
             method: "GET",
           headers: {
             "Authorization": `Bearer ${localStorage.getItem("token")}`,

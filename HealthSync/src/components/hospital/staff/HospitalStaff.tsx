@@ -7,6 +7,7 @@ import { Plus } from "lucide-react";
 import { Staff } from "./types";
 import StaffList from "./StaffList";
 import StaffForm, { StaffFormData } from "./StaffForm";
+import { API_URL } from "@/utils/api";
 
 export default function HospitalStaff() {
   const [staffList, setStaffList] = useState<Staff[]>([]);
@@ -24,7 +25,7 @@ export default function HospitalStaff() {
       if (!token) throw new Error("No token found");
 
       const response = await axios.get(
-        "http://localhost:5000/api/hospital/staff/all",
+        `${API_URL}/hospital/staff/all`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -72,14 +73,14 @@ export default function HospitalStaff() {
 
       if (formMode === "add") {
         await axios.post(
-          "http://localhost:5000/api/hospital/staff/add",
+          `${API_URL}/hospital/staff/add`,
           data,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         toast.success("Staff added successfully");
       } else if (formMode === "edit" && data._id) {
         await axios.put(
-          `http://localhost:5000/api/hospital/staff/edit/${data._id}`,
+          `${API_URL}/hospital/staff/edit/${data._id}`,
           data,
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -102,7 +103,7 @@ export default function HospitalStaff() {
     const token = localStorage.getItem("token");
     if (!token) throw new Error("No token found");
 
-    await axios.delete(`http://localhost:5000/api/hospital/staff/delete/${staffId}`, {
+    await axios.delete(`${API_URL}/hospital/staff/delete/${staffId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
