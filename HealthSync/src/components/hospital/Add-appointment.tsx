@@ -18,6 +18,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { API_URL } from "@/utils/api";
 
 interface AppointmentType {
   id: string;
@@ -46,7 +47,7 @@ export default function AddAppointment() {
     try {
       const token = localStorage.getItem("token"); // hospital auth token
 
-      const res = await fetch("http://localhost:5000/api/hospital/appointments/book-for-patient", {
+      const res = await fetch(`${API_URL}/hospital/appointments/book-for-patient`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

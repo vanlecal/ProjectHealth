@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { useAuth } from "@/context/AuthContext";
 import RecentAppointments from "./RecentAppointments";
+import { API_URL } from "@/utils/api";
 
 interface NextAppointment {
   _id?: string;
@@ -38,7 +39,7 @@ export default function HomeTab() {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch("http://localhost:5000/api/patient/stat", {
+        const res = await fetch(`${API_URL}/patient/stat`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
