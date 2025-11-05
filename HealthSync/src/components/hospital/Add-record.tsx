@@ -102,6 +102,7 @@ export default function AddRecord() {
   }, [showDialog]);
 
   const fetchHospitalStaff = async () => {
+  setLoadingDoctors(true);
   try {
     const res = await fetch(`${API_URL}/patient/hospital-staff/${user?._id}`, {
       headers: {
@@ -130,6 +131,8 @@ export default function AddRecord() {
     }
   } catch (err) {
     console.error(err);
+  } finally {
+    setLoadingDoctors(false);
   }
 };
 

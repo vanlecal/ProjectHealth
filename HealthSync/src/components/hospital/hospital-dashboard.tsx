@@ -77,7 +77,7 @@ const NavigationContent: React.FC<NavigationContentProps> = ({ activeTab, setAct
 
 export default function HospitalDashboard() {
   const [activeTab, setActiveTab] = useState<string>("overview");
-  const [showAddRecordDialog, setShowAddRecordDialog] = useState<boolean>(false);
+  const [, setShowAddRecordDialog] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const { user } = useAuth();
 
