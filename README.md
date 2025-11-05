@@ -194,7 +194,7 @@ This project is licensed under the ISC License. See the LICENSE file for details
 ## Contact
 
 For support or inquiries:
-- Email: support@healthsync.com
-- Phone: +1 (555) 123-4567
+- Email: neutral529@gmail.com
+- Phone: (+233) 55-905–4207
 
 © 2025 HealthSync. All rights reserved.
